@@ -19,11 +19,11 @@ void Entity::setSize(sf::Vector2f newSize)
 	rect.setSize(newSize);
 }
 
-void Entity::setSize(float x, float y)
+void Entity::setSize(float x)
 {
 	size.x = x;
-	size.y = y;
-	rect.setSize(sf::Vector2f(x, y));
+	size.y = x;
+	rect.setSize(sf::Vector2f(x, x));
 }
 
 void Entity::setPosition(sf::Vector2f newPos)

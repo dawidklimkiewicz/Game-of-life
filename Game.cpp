@@ -6,6 +6,7 @@ Game::Game()
 	initWindow();
 	initText();
 	createBackground();
+	deltaTime = 0.1;
 	randomSpawnChance = 5;
 	frame = 0;
 }
@@ -17,8 +18,15 @@ Game::~Game()
 
 void Game::gameUpdate()
 {
-	getMousePos();
+	readMousePos();
 	printMousePos();
+
+	//create next generation after deltaTime
+	if (clock.getElapsedTime().asSeconds() > deltaTime) {
+		nextGeneration();
+		clock.restart();
+	}
+	
 }
 
 void Game::initWindow()
@@ -47,7 +55,7 @@ void Game::initText()
 void Game::createBackground()
 {
 	Entity entity;
-	entity.setSize(10.f, 10.f);
+	entity.setSize(10.f);
 
 	backgroundWidth = (int)window->getSize().x / (int)entity.getSize().x;
 	backgroundHeight = (int)window->getSize().y / (int)entity.getSize().y;
@@ -76,15 +84,6 @@ void Game::setRandomSpawnChance(int newValue)
 }
 
 
-void Game::getMousePos()
-{
-	// trzeba takie coœ zrobiæ ¿eby zmienia³o siê wraz ze zmian¹ rozmiaru okna
-
-	sf::Vector2i tempPos = sf::Mouse::getPosition(*window);
-	mousePos = window->mapPixelToCoords(tempPos);
-}
-
-
 void Game::colorRandomEntities(sf::Color color)
 {
 	srand((unsigned)time(NULL));
@@ -106,6 +105,61 @@ void Game::colorRandomEntities(sf::Color color)
 			}
 		}
 	}
+}
+
+void Game::nextGeneration()
+{
+	std::vector<std::vector<Entity>> newBackground(background);	//copy of background
+
+	for (int i = 0; i < backgroundHeight; i++) 
+	{
+		for (int j = 0; j < backgroundWidth; j++) 
+		{
+			int adjacent = countAliveAdjacent(i, j);
+
+			if (background[i][j].getIsAlive() && (adjacent - 1 == 2 || adjacent - 1 == 3)) {
+				continue;
+			}
+
+			else if (!background[i][j].getIsAlive() && adjacent == 3) {
+				newBackground[i][j].setIsAlive(true);
+				newBackground[i][j].setColor(sf::Color::Black);
+			} 
+
+			
+			else {
+				newBackground[i][j].setIsAlive(false);
+				newBackground[i][j].setColor(sf::Color::White);
+			}
+		}
+	}
+
+	background = newBackground;
+}
+
+int Game::countAliveAdjacent(int i, int j)
+{
+	int count = 0;
+	
+	for (int k = i - 1; k <= i + 1; k++) {
+		for (int l = j - 1; l <= j + 1; l++) {
+			if (k < 0 || k >= backgroundHeight || l < 0 || l >= backgroundWidth)
+				continue;
+			
+			if (background[k][l].getIsAlive()) 
+				count++;
+		}
+	}
+
+	return count;
+}
+
+void Game::readMousePos()
+{
+	// trzeba takie coœ zrobiæ ¿eby zmienia³o siê wraz ze zmian¹ rozmiaru okna
+
+	sf::Vector2i tempPos = sf::Mouse::getPosition(*window);
+	mousePos = window->mapPixelToCoords(tempPos);
 }
 
 void Game::printMousePos()

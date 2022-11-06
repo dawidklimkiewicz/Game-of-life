@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include <time.h>
+#include <map>
 
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
@@ -18,6 +19,7 @@ private:
 	sf::Text text;
 	sf::Font font;
 
+	sf::Clock clock;
 	sf::VideoMode videoMode;
 	sf::Vector2f mousePos;
 
@@ -25,6 +27,7 @@ private:
 	int randomSpawnChance;	//used in colorRandomEntities()
 	int backgroundWidth;	//vector size based on screen and entity size
 	int backgroundHeight;
+	float deltaTime;
 	
 
 public:
@@ -46,9 +49,11 @@ public:
 	void setVideoMode(int x, int y);
 	void setRandomSpawnChance(int newValue);
 
-	void getMousePos();
+	void readMousePos();
 
 	void colorRandomEntities(sf::Color color = sf::Color::Black);	//spawn random blobs of entities
+	void nextGeneration();		//next iteration of the simulation
+	int countAliveAdjacent(int i, int j);
 	void printMousePos();
 	void render();
 };

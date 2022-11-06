@@ -24,7 +24,7 @@ public:
 	//setters to avoid using entity.rect.
 
 	void setSize(sf::Vector2f newSize);
-	void setSize(float x, float y);
+	void setSize(float x);
 	void setPosition(sf::Vector2f newPos);
 	void setPosition(float x, float y);
 
