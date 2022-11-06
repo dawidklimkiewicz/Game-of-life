@@ -4,7 +4,8 @@
 Menu::Menu()
 {
 	initWindow();
-	initFont();
+	initFont(mouse);
+	gameSize = 15;
 }
 
 Menu::~Menu()
@@ -25,15 +26,8 @@ void Menu::pollEvents()
 		if (event.type == sf::Event::Closed)
 			window->close();
 
-		if (event.type == sf::Event::MouseMoved) {
-			if (button.isMouseOver(mousePos)) {
-				button.setColor(sf::Color::White);
-			}
-			else button.setColor(sf::Color::Black);
-		}
-
 		if (event.type == sf::Event::MouseButtonPressed) {
-			if (button.isMouseOver(mousePos))
+			if (btnSizeMore.isMouseOver(mousePos))
 				std::cout << "klik" << std::endl;
 		}
 	}
@@ -41,22 +35,19 @@ void Menu::pollEvents()
 
 void Menu::initWindow()
 {
-	setVideoMode(1600, 900);
+	setVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
 
 	window = new sf::RenderWindow(videoMode, "GAME OF LIFE");
 	window->setFramerateLimit(60);
 }
 
-void Menu::initFont()
+void Menu::initFont(sf::Text &txt)
 {
-	/*if (!font.loadFromFile(FONT_PATH))
-		std::cout << "ERROR: MENU::initText() - font not loaded\n";*/
-
 	if (font.loadFromFile(FONT_PATH)) {
-		mouse.setString("NULL");
-		mouse.setFont(font);
-		mouse.setCharacterSize(30);
-		mouse.setFillColor(sf::Color::Black);
+		txt.setString("NULL");
+		txt.setFont(font);
+		txt.setCharacterSize(48);
+		txt.setFillColor(sf::Color::Black);
 	}
 	else std::cout << "ERROR: Game::initText() - font not loaded\n";
 }
@@ -74,12 +65,36 @@ sf::Vector2f Menu::getMousePos()
 
 void Menu::render()
 {
-	window->clear(sf::Color::Cyan);
-	button.renderButton(window);
+	window->clear(sf::Color::White);
 
+	renderLayout();
 	window->draw(mouse);
 
 	window->display();
+}
+
+void Menu::renderLayout()
+{
+	std::stringstream ss;
+	ss << "Size of the simulatinon (N x N): " << gameSize;
+	initFont(txtGameSize);
+	txtGameSize.setString(ss.str());
+	txtGameSize.setPosition((window->getSize().x / 2) - txtGameSize.getGlobalBounds().width / 2, 100);
+
+	window->draw(txtGameSize);
+	btnSizeMore.renderButton(window);
+	btnSizeMore2.renderButton(window);
+	btnSizeLess.renderButton(window);
+	btnSizeLess2.renderButton(window);
+
+	ss.str("");
+	ss << "Time between generations in seconds: " << deltaTime;
+	initFont(txtDeltaTime);
+
+	btnDeltaTimeMore.renderButton(window);
+	btnDeltaTimeMore2.renderButton(window);
+	btnDeltaTimeLess.renderButton(window);
+	btnDeltaTimeLess2.renderButton(window);
 }
 
 void Menu::printMousePos()

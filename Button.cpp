@@ -1,20 +1,17 @@
 #include "Button.h"
 
-Button::Button(sf::Vector2f size, sf::Color color, std::string text, sf::Vector2f pos)
+Button::Button(sf::Vector2f size, sf::Color color, std::string txt, sf::Vector2f pos)
 {
 	initFont();
-
-	setText(text);
-	rect.setSize(size);
-	rect.setOrigin(size / 2.f);
+	setText(txt);
 	rect.setFillColor(color);
+	rect.setSize(size);
 	setPosition(pos);
 }
 
 void Button::initFont()
 {
 	if (font.loadFromFile(FONT_PATH)) {
-		text.setString("NULL");
 		text.setFont(font);
 		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);
@@ -37,11 +34,11 @@ void Button::setColor(sf::Color color)
 	rect.setFillColor(color);
 }
 
-void Button::setText(std::string text)
+void Button::setText(std::string txt)
 {
 	std::stringstream ss;
-	ss << text;
-	this->text.setString(ss.str());
+	ss << txt;
+	text.setString(ss.str());
 }
 
 void Button::setTextColor(sf::Color color, sf::Color outline=sf::Color::Black)
@@ -58,15 +55,15 @@ void Button::setFontSize(int size)
 void Button::setPosition(int x, int y)
 {
 	rect.setPosition(sf::Vector2f(x, y));
-	text.setPosition((x + rect.getGlobalBounds().width / 2) - (text.getGlobalBounds().width / 2),
-		(y + rect.getGlobalBounds().height / 2) - (text.getGlobalBounds().height / 2));
+	text.setPosition(x + (rect.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f),
+		y + (rect.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f));
 }
 
 void Button::setPosition(sf::Vector2f newPos)
 {
 	rect.setPosition(newPos);
-	text.setPosition(newPos.x - (text.getGlobalBounds().width / 2), 
-		newPos.y - (text.getGlobalBounds().height));
+	text.setPosition(newPos.x + (rect.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f),
+		newPos.y + (rect.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height));
 }
 
 sf::RectangleShape Button::getButton()

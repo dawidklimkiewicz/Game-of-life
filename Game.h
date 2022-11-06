@@ -1,7 +1,7 @@
 #pragma once
 
 #define FONT_PATH "Fonts/ComicNeue-Regular.ttf"
-#define DEFAULT_SCREEN_WIDTH 1600
+#define DEFAULT_SCREEN_WIDTH 1200
 #define DEFAULT_SCREEN_HEIGHT 900
 
 #include <sstream>
