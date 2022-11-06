@@ -49,9 +49,14 @@ void Game::createBackground()
 	Entity entity;
 	entity.setSize(10.f, 10.f);
 
-	for (int i = 0; i < window->getSize().x; i += entity.getSize().x) {
+	backgroundWidth = (int)window->getSize().x / (int)entity.getSize().x;
+	backgroundHeight = (int)window->getSize().y / (int)entity.getSize().y;
+
+	for (int i = 0; i < window->getSize().x; i += entity.getSize().x) 
+	{
 		std::vector<Entity> row;
-		for (int j = 0; j < window->getSize().y; j += entity.getSize().y) {
+		for (int j = 0; j < window->getSize().y; j += entity.getSize().y) 
+		{
 			entity.setPosition(sf::Vector2f(i, j));
 			row.push_back(entity);
 		}
@@ -95,6 +100,8 @@ void Game::colorRandomEntities(sf::Color color)
 			}	
 		}
 	}
+
+	
 }
 
 void Game::printMousePos()

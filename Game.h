@@ -22,7 +22,9 @@ private:
 	sf::Vector2f mousePos;
 
 	int frame;
-	int randomSpawnChance; //used in colorRandomEntities()
+	int randomSpawnChance;	//used in colorRandomEntities()
+	int backgroundWidth;	//vector size based on screen and entity size
+	int backgroundHeight;
 	
 
 public:
@@ -39,7 +41,7 @@ public:
 
 	void initWindow();
 	void initText();
-	void createBackground();
+	void createBackground();	//create a vector containing entities
 
 	void setVideoMode(int x, int y);
 	void setRandomSpawnChance(int newValue);

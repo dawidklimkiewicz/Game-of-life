@@ -4,7 +4,7 @@
 int main()
 {
 	Game game;
-	game.setRandomSpawnChance(7);
+	game.setRandomSpawnChance(5);
 	game.colorRandomEntities();
 
 	while (game.window->isOpen())
