@@ -41,14 +41,14 @@ public:
 
 	void initWindow();
 	void initText();
-	void createBackground();	//create a vector containing entities
+	void createBackground();	//create a vector containing entities with their positions
 
 	void setVideoMode(int x, int y);
 	void setRandomSpawnChance(int newValue);
 
 	void getMousePos();
 
-	void colorRandomEntities(sf::Color color = sf::Color::Black);
+	void colorRandomEntities(sf::Color color = sf::Color::Black);	//spawn random blobs of entities
 	void printMousePos();
 	void render();
 };

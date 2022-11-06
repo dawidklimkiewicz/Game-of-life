@@ -52,12 +52,12 @@ void Game::createBackground()
 	backgroundWidth = (int)window->getSize().x / (int)entity.getSize().x;
 	backgroundHeight = (int)window->getSize().y / (int)entity.getSize().y;
 
-	for (int i = 0; i < window->getSize().x; i += entity.getSize().x) 
+	for (int j = 0; j < backgroundHeight; j ++) 
 	{
 		std::vector<Entity> row;
-		for (int j = 0; j < window->getSize().y; j += entity.getSize().y) 
+		for (int i = 0; i < backgroundWidth; i ++) 
 		{
-			entity.setPosition(sf::Vector2f(i, j));
+			entity.setPosition(sf::Vector2f(i * entity.getSize().x, j * entity.getSize().y));
 			row.push_back(entity);
 		}
 		background.push_back(row);
@@ -72,9 +72,6 @@ void Game::setVideoMode(int x, int y)
 
 void Game::setRandomSpawnChance(int newValue)
 {
-	if (newValue > 100) newValue = 100;
-	if (newValue < 0)	newValue = 0;
-
 	randomSpawnChance = newValue;
 }
 
@@ -92,16 +89,23 @@ void Game::colorRandomEntities(sf::Color color)
 {
 	srand((unsigned)time(NULL));
 
-	for (int i = 0; i < background.size(); i++) {
-		for (int j = 0; j < background[i].size(); j++) {
-			if ((rand() % 100) <= randomSpawnChance && !background[i][j].getIsAlive()) {
+	for (int i = 1; i < backgroundHeight - 1; i++) {
+		for (int j = 1; j < backgroundWidth - 1; j++) {
+			if ((rand() % 10000) <= randomSpawnChance && !background[i][j].getIsAlive()) {
 				background[i][j].setColor(color);
 				background[i][j].setIsAlive(true);
-			}	
+
+				for (int k = i - 1; k <= i + 1; k++) {
+					for (int l = j - 1; l <= j + 1; l++) {
+						if ((rand() % 100) <= 25) {
+							background[k][l].setColor(color);
+							background[k][l].setIsAlive(true);
+						}
+					}
+				}
+			}
 		}
 	}
-
-	
 }
 
 void Game::printMousePos()
@@ -116,12 +120,13 @@ void Game::render()
 {
 	window->clear(sf::Color::White);
 
-	for (int i = 0; i < background.size(); i++) {
-		for (int j = 0; j < background[i].size(); j++) {
+	for (int i = 0; i < backgroundHeight; i++) {
+		for (int j = 0; j < backgroundWidth; j++) {
 			if (background[i][j].getIsAlive())
 				window->draw(background[i][j].getRect());
 		}
 	}
+
 	window->draw(text);
 
 	window->display();
