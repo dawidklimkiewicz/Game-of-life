@@ -82,6 +82,10 @@ bool Button::isMouseOver(sf::Vector2f mousePos)
 	else return false;
 }
 
+void Button::clicked()
+{
+}
+
 void Button::renderButton(sf::RenderWindow* window)
 {
 	window->draw(rect);

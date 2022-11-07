@@ -1,8 +1,8 @@
 #pragma once
 
 #define FONT_PATH "Fonts/ComicNeue-Regular.ttf"
-#define DEFAULT_SCREEN_WIDTH 1200
-#define DEFAULT_SCREEN_HEIGHT 900
+#define DEFAULT_SCREEN_WIDTH 900.0
+#define DEFAULT_SCREEN_HEIGHT 900.0
 
 #include <sstream>
 #include <vector>
@@ -24,7 +24,8 @@ private:
 	sf::Vector2f mousePos;
 
 	int frame;
-	int randomSpawnChance;	//used in colorRandomEntities()
+	float randomSpawnChance;	//used in colorRandomEntities()
+	float chanceSpawnAround;
 	int backgroundWidth;	//vector size based on screen and entity size
 	int backgroundHeight;
 	float deltaTime;
@@ -33,11 +34,12 @@ private:
 public:
 	sf::RenderWindow *window;
 
-	Game();
+	Game(int width = 90, int height = 90);
 	~Game();
 
 	//updates state of the app
 
+	void pollEvents();
 	void gameUpdate();
 
 	//init functions, to be called once at the start
@@ -47,7 +49,9 @@ public:
 	void createBackground();	//create a vector containing entities with their positions
 
 	void setVideoMode(int x, int y);
-	void setRandomSpawnChance(int newValue);
+	void setRandomSpawnChance(float newValue);
+	void setChanceSpawnAround(float newValue);
+	void setDeltaTime(float newValue);
 
 	void readMousePos();
 

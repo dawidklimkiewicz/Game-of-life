@@ -1,19 +1,37 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game()
+Game::Game(int width, int height)
 {
+	backgroundWidth = width;
+	backgroundHeight = height;
 	initWindow();
 	initText();
 	createBackground();
 	deltaTime = 0.1;
 	randomSpawnChance = 5;
+	chanceSpawnAround = 25;
 	frame = 0;
 }
 
 Game::~Game()
 {
 	delete this->window;
+}
+
+void Game::pollEvents()
+{
+	sf::Event event;
+	while (window->pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+			window->close();
+
+		/*if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == sf::Keyboard::Space)
+				gameUpdate();*/
+
+	}
 }
 
 void Game::gameUpdate()
@@ -55,10 +73,9 @@ void Game::initText()
 void Game::createBackground()
 {
 	Entity entity;
-	entity.setSize(10.f);
+	entity.setSize(sf::Vector2f(DEFAULT_SCREEN_WIDTH / backgroundHeight,
+		DEFAULT_SCREEN_HEIGHT / backgroundHeight ));
 
-	backgroundWidth = (int)window->getSize().x / (int)entity.getSize().x;
-	backgroundHeight = (int)window->getSize().y / (int)entity.getSize().y;
 
 	for (int j = 0; j < backgroundHeight; j ++) 
 	{
@@ -78,9 +95,19 @@ void Game::setVideoMode(int x, int y)
 	videoMode.height = y;
 }
 
-void Game::setRandomSpawnChance(int newValue)
+void Game::setRandomSpawnChance(float newValue)
 {
 	randomSpawnChance = newValue;
+}
+
+void Game::setChanceSpawnAround(float newValue)
+{
+	chanceSpawnAround = newValue;
+}
+
+void Game::setDeltaTime(float newValue)
+{
+	deltaTime = newValue;
 }
 
 
@@ -90,13 +117,13 @@ void Game::colorRandomEntities(sf::Color color)
 
 	for (int i = 1; i < backgroundHeight - 1; i++) {
 		for (int j = 1; j < backgroundWidth - 1; j++) {
-			if ((rand() % 10000) <= randomSpawnChance && !background[i][j].getIsAlive()) {
+			if ((rand() % 100) <= randomSpawnChance && !background[i][j].getIsAlive()) {
 				background[i][j].setColor(color);
 				background[i][j].setIsAlive(true);
 
 				for (int k = i - 1; k <= i + 1; k++) {
 					for (int l = j - 1; l <= j + 1; l++) {
-						if ((rand() % 100) <= 25) {
+						if ((rand() % 100) < chanceSpawnAround) {
 							background[k][l].setColor(color);
 							background[k][l].setIsAlive(true);
 						}

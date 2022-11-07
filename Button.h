@@ -13,6 +13,7 @@ private:
 	sf::RectangleShape rect;
 	sf::Font font;
 	sf::Text text;
+
 public:
 
 	Button(sf::Vector2f size = sf::Vector2f(100, 200), sf::Color color = sf::Color::Red
@@ -31,6 +32,7 @@ public:
 
 	sf::RectangleShape getButton();		//returns RectangleShape object
 	bool isMouseOver(sf::Vector2f mousePos);
+	void clicked();
 
 	void renderButton(sf::RenderWindow *window);
 };
