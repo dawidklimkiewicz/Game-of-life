@@ -73,6 +73,7 @@ public:
 
 	void update();
 	void pollEvents();
+	void buttonsClicked(sf::Event event);
 
 	void initWindow();
 	void initFont(sf::Text &txt);

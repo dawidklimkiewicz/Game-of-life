@@ -6,6 +6,8 @@ Button::Button(sf::Vector2f size, sf::Color color, std::string txt, sf::Vector2f
 	setText(txt);
 	rect.setFillColor(color);
 	rect.setSize(size);
+	rect.setOutlineThickness(2);
+	rect.setOutlineColor(sf::Color::Black);
 	setPosition(pos);
 }
 
@@ -76,15 +78,19 @@ bool Button::isMouseOver(sf::Vector2f mousePos)
 	if (mousePos.x > rect.getGlobalBounds().left &&
 		mousePos.x < rect.getGlobalBounds().left + rect.getSize().x &&
 		mousePos.y > rect.getGlobalBounds().top &&
-		mousePos.y < rect.getGlobalBounds().top + rect.getSize().y)
+		mousePos.y < rect.getGlobalBounds().top + rect.getSize().y) {
+
 		return true;
+	}
 
 	else return false;
 }
 
 void Button::clicked()
 {
+	setColor(sf::Color(64, 64, 64));
 }
+
 
 void Button::renderButton(sf::RenderWindow* window)
 {

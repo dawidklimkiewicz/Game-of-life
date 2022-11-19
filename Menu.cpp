@@ -4,10 +4,6 @@
 Menu::Menu()
 {
 	initWindow();
-	gameSize = 90;
-	deltaTime = 0.1;
-	randomSpawnChance = 5;
-	chanceSpawnAround = 25;
 }
 
 Menu::~Menu()
@@ -33,76 +29,11 @@ void Menu::pollEvents()
 		if (event.type == sf::Event::Closed)
 			window->close();
 
-		if (event.type == sf::Event::MouseButtonPressed) {
-			if (btnSizeMore->isMouseOver(mousePos))
-				gameSize ++;
-
-			if (btnSizeMore2->isMouseOver(mousePos))
-				gameSize += 10;
-
-			if (btnSizeLess->isMouseOver(mousePos))
-				gameSize--;
-
-			if (btnSizeLess2->isMouseOver(mousePos))
-				gameSize -= 10;
-
-
-			if (btnDeltaTimeMore->isMouseOver(mousePos))
-				deltaTime += 0.01;
-
-			if (btnDeltaTimeMore2->isMouseOver(mousePos))
-				deltaTime += 0.1;
-
-			if (btnDeltaTimeLess->isMouseOver(mousePos))
-				deltaTime -= 0.01;
-
-			if (btnDeltaTimeLess2->isMouseOver(mousePos))
-				deltaTime -= 0.1;
-
-
-			if (btnChanceMore->isMouseOver(mousePos))
-				randomSpawnChance++;
-
-			if (btnChanceMore2->isMouseOver(mousePos))
-				randomSpawnChance += 10;
-
-			if (btnChanceLess->isMouseOver(mousePos))
-				randomSpawnChance--;
-
-			if (btnChanceLess2->isMouseOver(mousePos))
-				randomSpawnChance -= 10;
-
-
-			if (btnChanceAroundMore->isMouseOver(mousePos))
-				chanceSpawnAround++;
-
-			if (btnChanceAroundMore2->isMouseOver(mousePos))
-				chanceSpawnAround += 10;
-
-			if (btnChanceAroundLess->isMouseOver(mousePos))
-				chanceSpawnAround--;
-
-			if (btnChanceAroundLess2->isMouseOver(mousePos))
-				chanceSpawnAround -= 10;
-
-			
-
-			if (btnNext->isMouseOver(mousePos))
-				window->close();
-		}
-
-
-		if (gameSize < 10) gameSize = 10;
-
-		if (deltaTime < 0.01) deltaTime = 0.01;
-
-		if (chanceSpawnAround < 0) chanceSpawnAround = 0;
-		if (chanceSpawnAround > 100) chanceSpawnAround = 100;
-
-		if (randomSpawnChance < 0) randomSpawnChance = 0;
-		if (randomSpawnChance > 100) randomSpawnChance = 100;
+		if (event.type == sf::Event::MouseButtonPressed)
+			buttonsClicked(event);	
 	}
 }
+
 
 void Menu::initWindow()
 {
@@ -110,6 +41,11 @@ void Menu::initWindow()
 
 	window = new sf::RenderWindow(videoMode, "GAME OF LIFE");
 	window->setFramerateLimit(60);
+
+	gameSize = 90;
+	deltaTime = 0.1;
+	randomSpawnChance = 5;
+	chanceSpawnAround = 25;
 }
 
 void Menu::initFont(sf::Text &txt)
@@ -189,7 +125,7 @@ void Menu::renderLayout()
 	window->draw(txtRandomSpawnChance);
 
 	ss.str("");
-	ss << "Chance to spawn a cell next to\n a randomly spawned cell: " << chanceSpawnAround;
+	ss << "Chance to spawn a cell next to\n a randomly spawned cell: " << chanceSpawnAround << "%";
 	initFont(txtChanceSpawnAround);
 	txtChanceSpawnAround.setString(ss.str());
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);
@@ -219,4 +155,92 @@ void Menu::printMousePos()
 	mouse.setCharacterSize(30);
 	ss << "Mouse pos: " << (int)mousePos.x << " " << (int)mousePos.y << '\n';
 	mouse.setString(ss.str());
+}
+
+
+void Menu::buttonsClicked(sf::Event event)
+{
+	if (btnSizeMore->isMouseOver(mousePos))
+		gameSize++;
+
+
+	if (btnSizeMore2->isMouseOver(mousePos))
+		gameSize += 10;
+
+	if (btnSizeLess->isMouseOver(mousePos)) {
+		gameSize--;
+		if (gameSize < 10) gameSize = 10;
+	}
+
+	if (btnSizeLess2->isMouseOver(mousePos)) {
+		gameSize -= 10;
+		if (gameSize < 10) gameSize = 10;
+	}
+
+
+	if (btnDeltaTimeMore->isMouseOver(mousePos))
+		deltaTime += 0.01;
+
+	if (btnDeltaTimeMore2->isMouseOver(mousePos))
+		deltaTime += 0.1;
+
+	if (btnDeltaTimeLess->isMouseOver(mousePos)) {
+		deltaTime -= 0.01;
+		if (deltaTime < 0.01) deltaTime = 0.01;
+	}
+
+	if (btnDeltaTimeLess2->isMouseOver(mousePos)) {
+		deltaTime -= 0.1;
+		if (deltaTime < 0.01) deltaTime = 0.01;
+	}
+
+
+
+	if (btnChanceMore->isMouseOver(mousePos)) {
+		randomSpawnChance++;
+		if (randomSpawnChance > 100) randomSpawnChance = 100;
+	}
+
+	if (btnChanceMore2->isMouseOver(mousePos)) {
+		randomSpawnChance += 10;
+		if (randomSpawnChance > 100) randomSpawnChance = 100;
+	}
+
+	if (btnChanceLess->isMouseOver(mousePos)) {
+		randomSpawnChance--;
+		if (randomSpawnChance < 0) randomSpawnChance = 0;
+	}
+
+	if (btnChanceLess2->isMouseOver(mousePos)) {
+		randomSpawnChance -= 10;
+		if (randomSpawnChance < 0) randomSpawnChance = 0;
+	}
+
+
+
+	if (btnChanceAroundMore->isMouseOver(mousePos)) {
+		chanceSpawnAround++;
+		if (chanceSpawnAround > 100) chanceSpawnAround = 100;
+	}
+
+	if (btnChanceAroundMore2->isMouseOver(mousePos)) {
+		chanceSpawnAround += 10;
+		if (chanceSpawnAround > 100) chanceSpawnAround = 100;
+	}
+
+	if (btnChanceAroundLess->isMouseOver(mousePos)) {
+		chanceSpawnAround--;
+		if (chanceSpawnAround < 0) chanceSpawnAround = 0;
+	}
+
+	if (btnChanceAroundLess2->isMouseOver(mousePos)) {
+		chanceSpawnAround -= 10;
+		if (chanceSpawnAround < 0) chanceSpawnAround = 0;
+	}
+
+
+
+	if (btnNext->isMouseOver(mousePos))
+		window->close();
+
 }
