@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#define FONT_PATH "Fonts/ComicNeue-Regular.ttf"
+#define FONT_PATH "Fonts/Roboto-Regular.ttf"
 
 class Button
 {

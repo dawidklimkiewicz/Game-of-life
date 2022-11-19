@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Button.h"
+#include "GameParameters.h"
 
 #define FONT_PATH "Fonts/ComicNeue-Regular.ttf"
 #define DEFAULT_SCREEN_WIDTH 1200
@@ -14,32 +15,21 @@ class DrawingScreen
 {
 private:
 
-	unsigned gameSize;
-
-	sf::VideoMode videoMode;
-	sf::Vector2f mousePos;
 	sf::Font font;
 	sf::Text txtMousePos;
 
 public:
 	sf::RenderWindow* window;
 
-	DrawingScreen();
+	DrawingScreen(GameParameters* gameParameters);
 	~DrawingScreen();
 
-	void update();
+	void update(GameParameters* gameParameters);
 	void pollEvents();
 
-	void initWindow();
-	void initFont();
-	void initText(sf::Text &text, std::string str = "NULL", unsigned size = 30, sf::Color color = sf::Color::Black);
-	void setVideoMode();
-	void setGameSize(unsigned size);
-
-	void readMousePos();
-	void printMousePos();
+	void initWindow(GameParameters* gameParameters);
 	
-	void render();
+	void render(GameParameters* gameParameters);
 
 };
 

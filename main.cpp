@@ -2,46 +2,36 @@
 #include "Game.h"
 #include "Menu.h"
 #include "DrawingScreen.h"
+#include "GameParameters.h"
 
 int main()
 {
-	Menu menu;
-	unsigned gameSize = 90;
-	int randomSpawnChance = 5;
-	int chanceSpawnAround = 25;
-	float deltaTime = 0.1;
+	GameParameters *gameParameters = new GameParameters;
 
+	Menu menu(gameParameters);
 	while (menu.window->isOpen())
 	{
-		menu.pollEvents();
-		menu.update();
-		menu.render();
-
-		gameSize = menu.getGameSize();
-		randomSpawnChance = menu.getRandomSpawnChance();
-		chanceSpawnAround = menu.getChanceSpawnAround();
-		deltaTime = menu.getDeltaTime();
-
+		menu.update(gameParameters);
+		menu.render(gameParameters);
 	}
 
-	DrawingScreen drawing;
 
+	DrawingScreen drawing(gameParameters);
 	while (drawing.window->isOpen())
 	{
-		drawing.update();
+		drawing.update(gameParameters);
+		drawing.render(gameParameters);
 	}
 
-	Game game(gameSize, gameSize);
-	game.setRandomSpawnChance(randomSpawnChance);
-	game.setChanceSpawnAround(chanceSpawnAround);
-	game.setDeltaTime(deltaTime);
-	game.colorRandomEntities();
+
+	Game game(gameParameters);
+	game.colorRandomEntities(gameParameters);
 
 	while (game.window->isOpen())
 	{
-		
-		game.pollEvents();
-		game.gameUpdate();
-		game.render();
+		game.gameUpdate(gameParameters);
+		game.render(gameParameters);
 	}
+
+	delete gameParameters;
 }

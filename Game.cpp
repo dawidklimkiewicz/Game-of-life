@@ -1,16 +1,10 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game(int width, int height)
+Game::Game(GameParameters* gameParameters)
 {
-	backgroundWidth = width;
-	backgroundHeight = height;
-	initWindow();
-	initText();
-	createBackground();
-	deltaTime = 0.1;
-	randomSpawnChance = 5;
-	chanceSpawnAround = 25;
+	initWindow(gameParameters);
+	createBackground(gameParameters);
 	frame = 0;
 }
 
@@ -26,61 +20,41 @@ void Game::pollEvents()
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
-
-		/*if (event.type == sf::Event::KeyPressed)
-			if (event.key.code == sf::Keyboard::Space)
-				gameUpdate();*/
-
 	}
 }
 
-void Game::gameUpdate()
+void Game::gameUpdate(GameParameters* gameParameters)
 {
-	readMousePos();
-	printMousePos();
+	pollEvents();
+	gameParameters->readMousePos(window);
 
 	//create next generation after deltaTime
-	if (clock.getElapsedTime().asSeconds() > deltaTime) {
-		nextGeneration();
+	if (clock.getElapsedTime().asSeconds() > gameParameters->deltaTime) {
+		nextGeneration(gameParameters);
 		clock.restart();
 	}
 	
 }
 
-void Game::initWindow()
+void Game::initWindow(GameParameters* gameParameters)
 {
-	setVideoMode(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT);
-
-	window = new sf::RenderWindow(videoMode, "GAME OF LIFE",
-		sf::Style::Close | sf::Style::Titlebar | sf::Style::Resize);
+	window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
 
 	window->setFramerateLimit(60);
 }
 
 
-void Game::initText()
-{
-	if (font.loadFromFile(FONT_PATH)) {
-		text.setString("NULL");
-		text.setFont(font);
-		text.setCharacterSize(30);
-		text.setFillColor(sf::Color::Green);
-	}
-	else std::cout << "ERROR: Game::initText() - font not loaded\n";
-}
-
-
-void Game::createBackground()
+void Game::createBackground(GameParameters* gameParameters)
 {
 	Entity entity;
-	entity.setSize(sf::Vector2f(DEFAULT_SCREEN_WIDTH / backgroundHeight,
-		DEFAULT_SCREEN_HEIGHT / backgroundHeight ));
+	entity.setSize(sf::Vector2f(gameParameters->videoMode.width / (float)gameParameters->gameSize,
+		gameParameters->videoMode.height / (float)gameParameters->gameSize));
 
 
-	for (int j = 0; j < backgroundHeight; j ++) 
+	for (unsigned j = 0; j < gameParameters->gameSize; j ++)
 	{
 		std::vector<Entity> row;
-		for (int i = 0; i < backgroundWidth; i ++) 
+		for (unsigned i = 0; i < gameParameters->gameSize; i ++)
 		{
 			entity.setPosition(sf::Vector2f(i * entity.getSize().x, j * entity.getSize().y));
 			row.push_back(entity);
@@ -89,41 +63,20 @@ void Game::createBackground()
 	}
 }
 
-void Game::setVideoMode(int x, int y)
-{
-	videoMode.width = x;
-	videoMode.height = y;
-}
 
-void Game::setRandomSpawnChance(float newValue)
-{
-	randomSpawnChance = newValue;
-}
-
-void Game::setChanceSpawnAround(float newValue)
-{
-	chanceSpawnAround = newValue;
-}
-
-void Game::setDeltaTime(float newValue)
-{
-	deltaTime = newValue;
-}
-
-
-void Game::colorRandomEntities(sf::Color color)
+void Game::colorRandomEntities(GameParameters *gameParameters, sf::Color color)
 {
 	srand((unsigned)time(NULL));
 
-	for (int i = 1; i < backgroundHeight - 1; i++) {
-		for (int j = 1; j < backgroundWidth - 1; j++) {
-			if ((rand() % 100) <= randomSpawnChance && !background[i][j].getIsAlive()) {
+	for (unsigned i = 1; i < gameParameters->gameSize - 1; i++) {
+		for (unsigned j = 1; j < gameParameters->gameSize - 1; j++) {
+			if ((rand() % 100) <= gameParameters->randomSpawnChance && !background[i][j].getIsAlive()) {
 				background[i][j].setColor(color);
 				background[i][j].setIsAlive(true);
 
-				for (int k = i - 1; k <= i + 1; k++) {
-					for (int l = j - 1; l <= j + 1; l++) {
-						if ((rand() % 100) < chanceSpawnAround) {
+				for (unsigned k = i - 1; k <= i + 1; k++) {
+					for (unsigned l = j - 1; l <= j + 1; l++) {
+						if ((rand() % 100) < gameParameters->chanceSpawnAround) {
 							background[k][l].setColor(color);
 							background[k][l].setIsAlive(true);
 						}
@@ -134,15 +87,15 @@ void Game::colorRandomEntities(sf::Color color)
 	}
 }
 
-void Game::nextGeneration()
+void Game::nextGeneration(GameParameters* gameParameters)
 {
 	std::vector<std::vector<Entity>> newBackground(background);	//copy of background
 
-	for (int i = 0; i < backgroundHeight; i++) 
+	for (unsigned i = 0; i < gameParameters->gameSize; i++)
 	{
-		for (int j = 0; j < backgroundWidth; j++) 
+		for (unsigned j = 0; j < gameParameters->gameSize; j++)
 		{
-			int adjacent = countAliveAdjacent(i, j);
+			int adjacent = countAliveAdjacent(gameParameters, i, j);
 
 			if (background[i][j].getIsAlive() && (adjacent - 1 == 2 || adjacent - 1 == 3)) {
 				continue;
@@ -164,13 +117,13 @@ void Game::nextGeneration()
 	background = newBackground;
 }
 
-int Game::countAliveAdjacent(int i, int j)
+int Game::countAliveAdjacent(GameParameters* gameParameters, int i, int j)
 {
 	int count = 0;
 	
 	for (int k = i - 1; k <= i + 1; k++) {
 		for (int l = j - 1; l <= j + 1; l++) {
-			if (k < 0 || k >= backgroundHeight || l < 0 || l >= backgroundWidth)
+			if (k < 0 || k >= gameParameters->gameSize || l < 0 || l >= gameParameters->gameSize)
 				continue;
 			
 			if (background[k][l].getIsAlive()) 
@@ -181,34 +134,18 @@ int Game::countAliveAdjacent(int i, int j)
 	return count;
 }
 
-void Game::readMousePos()
-{
-	// trzeba takie coœ zrobiæ ¿eby zmienia³o siê wraz ze zmian¹ rozmiaru okna
 
-	sf::Vector2i tempPos = sf::Mouse::getPosition(*window);
-	mousePos = window->mapPixelToCoords(tempPos);
-}
-
-void Game::printMousePos()
-{
-	std::stringstream ss;
-	ss << "Mouse pos: " << (int)mousePos.x << " " << (int)mousePos.y << '\n'
-		<< "Frame: " << frame++;
-	text.setString(ss.str());
-}
-
-void Game::render()
+void Game::render(GameParameters* gameParameters)
 {
 	window->clear(sf::Color::White);
 
-	for (int i = 0; i < backgroundHeight; i++) {
-		for (int j = 0; j < backgroundWidth; j++) {
+	for (unsigned i = 0; i < gameParameters->gameSize; i++) {
+		for (unsigned j = 0; j < gameParameters->gameSize; j++) {
 			if (background[i][j].getIsAlive())
 				window->draw(background[i][j].getRect());
 		}
 	}
 
-	window->draw(text);
-
+	gameParameters->printMousePos(window);
 	window->display();
 }

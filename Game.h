@@ -1,8 +1,6 @@
 #pragma once
 
-#define FONT_PATH "Fonts/ComicNeue-Regular.ttf"
-#define DEFAULT_SCREEN_WIDTH 900.0
-#define DEFAULT_SCREEN_HEIGHT 900.0
+#define FONT_PATH "Fonts/Roboto-Regular.ttf"
 
 #include <sstream>
 #include <vector>
@@ -11,54 +9,38 @@
 
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
+#include "GameParameters.h"
 
 class Game
 {
 private:
 	std::vector<std::vector<Entity>> background;
-	sf::Text text;
-	sf::Font font;
 
 	sf::Clock clock;
-	sf::VideoMode videoMode;
-	sf::Vector2f mousePos;
 
 	int frame;
-	float randomSpawnChance;	//used in colorRandomEntities()
-	float chanceSpawnAround;
-	int backgroundWidth;	//vector size based on screen and entity size
-	int backgroundHeight;
-	float deltaTime;
 	
 
 public:
 	sf::RenderWindow *window;
 
-	Game(int width = 90, int height = 90);
+	Game(GameParameters* gameParameters);
 	~Game();
 
 	//updates state of the app
 
 	void pollEvents();
-	void gameUpdate();
+	void gameUpdate(GameParameters* gameParameters);
 
 	//init functions, to be called once at the start
 
-	void initWindow();
-	void initText();
-	void createBackground();	//create a vector containing entities with their positions
+	void initWindow(GameParameters* gameParameters);
+	void createBackground(GameParameters* gameParameters);	//create a vector containing entities with their positions
 
-	void setVideoMode(int x, int y);
-	void setRandomSpawnChance(float newValue);
-	void setChanceSpawnAround(float newValue);
-	void setDeltaTime(float newValue);
+	void colorRandomEntities(GameParameters* gameParameters, sf::Color color = sf::Color::Black);	//spawn random blobs of entities
+	void nextGeneration(GameParameters* gameParameters);		//next iteration of the simulation
+	int countAliveAdjacent(GameParameters* gameParameters, int i, int j);
 
-	void readMousePos();
-
-	void colorRandomEntities(sf::Color color = sf::Color::Black);	//spawn random blobs of entities
-	void nextGeneration();		//next iteration of the simulation
-	int countAliveAdjacent(int i, int j);
-	void printMousePos();
-	void render();
+	void render(GameParameters* gameParameters);
 };
 
