@@ -4,8 +4,10 @@
 Game::Game(GameParameters* gameParameters)
 {
 	initWindow(gameParameters);
-	createBackground(gameParameters);
-	frame = 0;
+	//createBackground(gameParameters);
+	generationCounter = 0;
+	showGenerationCounter = false;
+	paused = false;
 }
 
 Game::~Game()
@@ -13,24 +15,37 @@ Game::~Game()
 	delete this->window;
 }
 
-void Game::pollEvents()
+void Game::pollEvents(GameParameters* gameParameters)
 {
 	sf::Event event;
 	while (window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
+
+		if (event.type == sf::Event::KeyPressed) {
+			if (event.key.code == sf::Keyboard::Escape)
+				window->close();
+
+			if (event.key.code == sf::Keyboard::Space)
+				paused = !paused;
+
+			if (event.key.code == sf::Keyboard::G)
+				showGenerationCounter = !showGenerationCounter;
+		}
+
 	}
 }
 
 void Game::gameUpdate(GameParameters* gameParameters)
 {
-	pollEvents();
+	pollEvents(gameParameters);
 	gameParameters->readMousePos(window);
 
 	//create next generation after deltaTime
-	if (clock.getElapsedTime().asSeconds() > gameParameters->deltaTime) {
+	if (!paused && clock.getElapsedTime().asSeconds() > gameParameters->deltaTime) {
 		nextGeneration(gameParameters);
+		generationCounter++;
 		clock.restart();
 	}
 	
@@ -44,52 +59,9 @@ void Game::initWindow(GameParameters* gameParameters)
 }
 
 
-void Game::createBackground(GameParameters* gameParameters)
-{
-	Entity entity;
-	entity.setSize(sf::Vector2f(gameParameters->videoMode.width / (float)gameParameters->gameSize,
-		gameParameters->videoMode.height / (float)gameParameters->gameSize));
-
-
-	for (unsigned j = 0; j < gameParameters->gameSize; j ++)
-	{
-		std::vector<Entity> row;
-		for (unsigned i = 0; i < gameParameters->gameSize; i ++)
-		{
-			entity.setPosition(sf::Vector2f(i * entity.getSize().x, j * entity.getSize().y));
-			row.push_back(entity);
-		}
-		background.push_back(row);
-	}
-}
-
-
-void Game::colorRandomEntities(GameParameters *gameParameters, sf::Color color)
-{
-	srand((unsigned)time(NULL));
-
-	for (unsigned i = 1; i < gameParameters->gameSize - 1; i++) {
-		for (unsigned j = 1; j < gameParameters->gameSize - 1; j++) {
-			if ((rand() % 100) <= gameParameters->randomSpawnChance && !background[i][j].getIsAlive()) {
-				background[i][j].setColor(color);
-				background[i][j].setIsAlive(true);
-
-				for (unsigned k = i - 1; k <= i + 1; k++) {
-					for (unsigned l = j - 1; l <= j + 1; l++) {
-						if ((rand() % 100) < gameParameters->chanceSpawnAround) {
-							background[k][l].setColor(color);
-							background[k][l].setIsAlive(true);
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 void Game::nextGeneration(GameParameters* gameParameters)
 {
-	std::vector<std::vector<Entity>> newBackground(background);	//copy of background
+	std::vector<std::vector<Entity>> newBackground(gameParameters->background);	//copy of background
 
 	for (unsigned i = 0; i < gameParameters->gameSize; i++)
 	{
@@ -97,11 +69,11 @@ void Game::nextGeneration(GameParameters* gameParameters)
 		{
 			int adjacent = countAliveAdjacent(gameParameters, i, j);
 
-			if (background[i][j].getIsAlive() && (adjacent - 1 == 2 || adjacent - 1 == 3)) {
+			if (gameParameters->background[i][j].getIsAlive() && (adjacent - 1 == 2 || adjacent - 1 == 3)) {
 				continue;
 			}
 
-			else if (!background[i][j].getIsAlive() && adjacent == 3) {
+			else if (!gameParameters->background[i][j].getIsAlive() && adjacent == 3) {
 				newBackground[i][j].setIsAlive(true);
 				newBackground[i][j].setColor(sf::Color::Black);
 			} 
@@ -114,7 +86,7 @@ void Game::nextGeneration(GameParameters* gameParameters)
 		}
 	}
 
-	background = newBackground;
+	gameParameters->background = newBackground;
 }
 
 int Game::countAliveAdjacent(GameParameters* gameParameters, int i, int j)
@@ -126,7 +98,7 @@ int Game::countAliveAdjacent(GameParameters* gameParameters, int i, int j)
 			if (k < 0 || k >= gameParameters->gameSize || l < 0 || l >= gameParameters->gameSize)
 				continue;
 			
-			if (background[k][l].getIsAlive()) 
+			if (gameParameters->background[k][l].getIsAlive())
 				count++;
 		}
 	}
@@ -141,11 +113,28 @@ void Game::render(GameParameters* gameParameters)
 
 	for (unsigned i = 0; i < gameParameters->gameSize; i++) {
 		for (unsigned j = 0; j < gameParameters->gameSize; j++) {
-			if (background[i][j].getIsAlive())
-				window->draw(background[i][j].getRect());
+			if (gameParameters->background[i][j].getIsAlive())
+				window->draw(gameParameters->background[i][j].getRect());
 		}
 	}
 
-	gameParameters->printMousePos(window);
+	if (showGenerationCounter) 
+		renderGenerationCounter(gameParameters);
+
 	window->display();
+}
+
+void Game::renderGenerationCounter(GameParameters* gameParameters)
+{
+	std::stringstream ss;
+	ss.str("");
+	ss << "Generation: " << generationCounter;
+	sf::Text genText;
+	gameParameters->initFont(genText);
+	genText.setString(ss.str());
+	genText.setPosition(10, window->getSize().y - genText.getGlobalBounds().height * 2);
+	genText.setFillColor(sf::Color::White);
+	genText.setOutlineColor(sf::Color::Black);
+	genText.setOutlineThickness(1);
+	window->draw(genText);
 }

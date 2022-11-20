@@ -17,6 +17,7 @@ int main()
 
 
 	DrawingScreen drawing(gameParameters);
+	drawing.colorRandomEntities(gameParameters);
 	while (drawing.window->isOpen())
 	{
 		drawing.update(gameParameters);
@@ -25,7 +26,6 @@ int main()
 
 
 	Game game(gameParameters);
-	game.colorRandomEntities(gameParameters);
 
 	while (game.window->isOpen())
 	{

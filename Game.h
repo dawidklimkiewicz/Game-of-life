@@ -14,12 +14,13 @@
 class Game
 {
 private:
-	std::vector<std::vector<Entity>> background;
+	
 
 	sf::Clock clock;
 
-	int frame;
-	
+	int generationCounter;
+	bool showGenerationCounter;
+	bool paused;
 
 public:
 	sf::RenderWindow *window;
@@ -29,18 +30,17 @@ public:
 
 	//updates state of the app
 
-	void pollEvents();
+	void pollEvents(GameParameters* gameParameters);
 	void gameUpdate(GameParameters* gameParameters);
 
 	//init functions, to be called once at the start
 
 	void initWindow(GameParameters* gameParameters);
-	void createBackground(GameParameters* gameParameters);	//create a vector containing entities with their positions
 
-	void colorRandomEntities(GameParameters* gameParameters, sf::Color color = sf::Color::Black);	//spawn random blobs of entities
 	void nextGeneration(GameParameters* gameParameters);		//next iteration of the simulation
 	int countAliveAdjacent(GameParameters* gameParameters, int i, int j);
 
 	void render(GameParameters* gameParameters);
+	void renderGenerationCounter(GameParameters* gameParameters);
 };
 

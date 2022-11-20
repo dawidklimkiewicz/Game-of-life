@@ -6,8 +6,8 @@ GameParameters::GameParameters()
 	gameSize = 90;
 	randomSpawnChance = 5;
 	chanceSpawnAround = 25;
-	videoMode.height = 900;
 	videoMode.width = 900;
+	videoMode.height = 900;
 }
 
 void GameParameters::initFont(sf::Text& txt)

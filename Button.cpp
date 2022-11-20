@@ -54,7 +54,7 @@ void Button::setFontSize(int size)
 	text.setCharacterSize(size);
 }
 
-void Button::setPosition(int x, int y)
+void Button::setPosition(float x, float y)
 {
 	rect.setPosition(sf::Vector2f(x, y));
 	text.setPosition(x + (rect.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f),

@@ -27,7 +27,7 @@ public:
 	void setText(std::string text);
 	void setTextColor(sf::Color color, sf::Color outline);
 	void setFontSize(int size);
-	void setPosition(int x, int y);
+	void setPosition(float x, float y);
 	void setPosition(sf::Vector2f newPos);
 
 	sf::RectangleShape getButton();		//returns RectangleShape object

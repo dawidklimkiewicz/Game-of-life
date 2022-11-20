@@ -31,7 +31,7 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 	window->draw(txtRandomSpawnChance);
 
 	ss.str("");
-	ss << "Chance to spawn a cell next to\n a randomly spawned cell: " << gameParameters->chanceSpawnAround << "%";
+	ss << "Chance to spawn another cell nearby: " << gameParameters->chanceSpawnAround << "%";
 	gameParameters->initFont(txtChanceSpawnAround);
 	txtChanceSpawnAround.setString(ss.str());
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);
@@ -44,7 +44,27 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 	txtShowFrameCount.setPosition((window->getSize().x / 2) - txtShowFrameCount.getGlobalBounds().width / 2, 650);
 	window->draw(txtShowFrameCount);*/
 
+	btnSizeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 100));
+	btnSizeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120 , 100));
+	btnSizeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 100));
+	btnSizeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 100));
 
+	btnDeltaTimeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 250));
+	btnDeltaTimeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 250));
+	btnDeltaTimeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 250));
+	btnDeltaTimeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 250));
+
+	btnChanceLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 400));
+	btnChanceLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 400));
+	btnChanceMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 400));
+	btnChanceMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 400));
+
+	btnChanceAroundLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 550));
+	btnChanceAroundLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 550));
+	btnChanceAroundMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 550));
+	btnChanceAroundMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 550));
+
+	btnNext->setPosition(sf::Vector2f((window->getSize().x / 2) - btnNext->getButton().getGlobalBounds().width / 2, 725));
 
 	for (auto btn : buttons) {
 		btn->renderButton(window);
@@ -53,8 +73,6 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 
 void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow *window, sf::Event event)
 {
-	
-
 
 	if (btnSizeMore->isMouseOver(gameParameters->mousePos))
 		gameParameters->gameSize += 1;
