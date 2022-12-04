@@ -9,6 +9,8 @@ MenuLayout::~MenuLayout()
 
 void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* window)
 {
+	//ustawienie tekstu na ekranie
+
 	std::stringstream ss;
 	ss << "Size of the simulatinon (N x N): " << gameParameters->gameSize;
 	gameParameters->initFont(txtGameSize);
@@ -37,12 +39,8 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);
 	window->draw(txtChanceSpawnAround);
 
-	/*ss.str("");
-	ss << "Show frame count";
-	initFont(txtShowFrameCount);
-	txtShowFrameCount.setString(ss.str());
-	txtShowFrameCount.setPosition((window->getSize().x / 2) - txtShowFrameCount.getGlobalBounds().width / 2, 650);
-	window->draw(txtShowFrameCount);*/
+
+	//ustawienie przyciskow na ekranie
 
 	btnSizeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 100));
 	btnSizeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120 , 100));
@@ -73,6 +71,7 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 
 void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow *window, sf::Event event)
 {
+	//obsluga przyciskow do zmiany rozmiaru
 
 	if (btnSizeMore->isMouseOver(gameParameters->mousePos))
 		gameParameters->gameSize += 1;
@@ -92,6 +91,8 @@ void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow
 	}
 
 
+	// obsluga przyciskow do zmiany czasu
+
 	if (btnDeltaTimeMore->isMouseOver(gameParameters->mousePos))
 		gameParameters->deltaTime += 0.01;
 
@@ -109,6 +110,7 @@ void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow
 	}
 
 
+	// obsluga przyciskwow do zmiany szansy
 
 	if (btnChanceMore->isMouseOver(gameParameters->mousePos)) {
 		gameParameters->randomSpawnChance++;
@@ -131,6 +133,7 @@ void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow
 	}
 
 
+	// obsluga przyciskwow do zmiany szansy dookola
 
 	if (btnChanceAroundMore->isMouseOver(gameParameters->mousePos)) {
 		gameParameters->chanceSpawnAround++;
@@ -155,5 +158,5 @@ void MenuLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWindow
 
 
 	if (btnNext->isMouseOver(gameParameters->mousePos))
-		window->close();
+		gameParameters->menuOpened = false;
 }

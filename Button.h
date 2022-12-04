@@ -30,7 +30,7 @@ public:
 	void setPosition(float x, float y);
 	void setPosition(sf::Vector2f newPos);
 
-	sf::RectangleShape getButton();		//returns RectangleShape object
+	sf::RectangleShape getButton();
 	bool isMouseOver(sf::Vector2f mousePos);
 	void clicked();
 

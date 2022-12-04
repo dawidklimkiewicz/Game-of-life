@@ -12,21 +12,19 @@ class Menu
 {
 private:
 
+	GameParameters* gameParameters;
 	MenuLayout menuLayout;
-	
 
 public:
 	sf::RenderWindow* window;
 
-	Menu(GameParameters* gameParameters);
+	Menu(GameParameters* parameters, sf::RenderWindow *window);
 	~Menu();
 
-	void update(GameParameters *gameParameters);
-	void pollEvents(GameParameters* gameParameters);
+	bool isOpen();
+	void update();
+	void pollEvents();
 
-	void initWindow(GameParameters* gameParameters);
-
-
-	void render(GameParameters* gameParameters);
+	void render();
 };
 

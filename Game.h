@@ -15,8 +15,8 @@ class Game
 {
 private:
 	
-
 	sf::Clock clock;
+	GameParameters* gameParameters;
 
 	int generationCounter;
 	bool showGenerationCounter;
@@ -25,22 +25,20 @@ private:
 public:
 	sf::RenderWindow *window;
 
-	Game(GameParameters* gameParameters);
+	Game(GameParameters* parameters, sf::RenderWindow* window);
 	~Game();
 
 	//updates state of the app
 
-	void pollEvents(GameParameters* gameParameters);
-	void gameUpdate(GameParameters* gameParameters);
+	void pollEvents();
+	void gameUpdate();
 
-	//init functions, to be called once at the start
 
-	void initWindow(GameParameters* gameParameters);
+	bool isOpen();
+	void nextGeneration();		//next iteration of the simulation
+	int countAliveAdjacent(int i, int j);
 
-	void nextGeneration(GameParameters* gameParameters);		//next iteration of the simulation
-	int countAliveAdjacent(GameParameters* gameParameters, int i, int j);
-
-	void render(GameParameters* gameParameters);
-	void renderGenerationCounter(GameParameters* gameParameters);
+	void render();
+	void renderGenerationCounter();
 };
 

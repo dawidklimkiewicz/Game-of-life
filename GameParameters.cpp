@@ -6,8 +6,14 @@ GameParameters::GameParameters()
 	gameSize = 90;
 	randomSpawnChance = 5;
 	chanceSpawnAround = 25;
+
 	videoMode.width = 900;
 	videoMode.height = 900;
+	gameState = 0;
+
+	menuOpened = false;
+	drawingScreenOpened = false;
+	gameOpened = false;
 }
 
 void GameParameters::initFont(sf::Text& txt)
@@ -21,11 +27,6 @@ void GameParameters::initFont(sf::Text& txt)
 	else std::cout << "ERROR: Game::initText() - font not loaded\n";
 }
 
-void GameParameters::setVideoMode()
-{
-	videoMode.width = gameSize;
-	videoMode.height = gameSize;
-}
 
 void GameParameters::readMousePos(sf::RenderWindow *window)
 {

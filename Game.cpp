@@ -1,21 +1,22 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game(GameParameters* gameParameters)
+Game::Game(GameParameters* parameters, sf::RenderWindow* window)
 {
-	initWindow(gameParameters);
-	//createBackground(gameParameters);
+	gameParameters = parameters;
+	this->window = window;
 	generationCounter = 0;
 	showGenerationCounter = false;
 	paused = false;
+	gameParameters->gameOpened = true;
 }
 
 Game::~Game()
 {
-	delete this->window;
+
 }
 
-void Game::pollEvents(GameParameters* gameParameters)
+void Game::pollEvents()
 {
 	sf::Event event;
 	while (window->pollEvent(event))
@@ -24,8 +25,8 @@ void Game::pollEvents(GameParameters* gameParameters)
 			window->close();
 
 		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Escape)
-				window->close();
+			if (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Enter)
+				gameParameters->gameOpened = false;
 
 			if (event.key.code == sf::Keyboard::Space)
 				paused = !paused;
@@ -37,29 +38,27 @@ void Game::pollEvents(GameParameters* gameParameters)
 	}
 }
 
-void Game::gameUpdate(GameParameters* gameParameters)
+void Game::gameUpdate()
 {
-	pollEvents(gameParameters);
+	pollEvents();
 	gameParameters->readMousePos(window);
 
 	//create next generation after deltaTime
 	if (!paused && clock.getElapsedTime().asSeconds() > gameParameters->deltaTime) {
-		nextGeneration(gameParameters);
+		nextGeneration();
 		generationCounter++;
 		clock.restart();
 	}
 	
 }
 
-void Game::initWindow(GameParameters* gameParameters)
-{
-	window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
 
-	window->setFramerateLimit(60);
+bool Game::isOpen()
+{
+	return gameParameters->gameOpened;
 }
 
-
-void Game::nextGeneration(GameParameters* gameParameters)
+void Game::nextGeneration()
 {
 	std::vector<std::vector<Entity>> newBackground(gameParameters->background);	//copy of background
 
@@ -67,7 +66,7 @@ void Game::nextGeneration(GameParameters* gameParameters)
 	{
 		for (unsigned j = 0; j < gameParameters->gameSize; j++)
 		{
-			int adjacent = countAliveAdjacent(gameParameters, i, j);
+			int adjacent = countAliveAdjacent(i, j);
 
 			if (gameParameters->background[i][j].getIsAlive() && (adjacent - 1 == 2 || adjacent - 1 == 3)) {
 				continue;
@@ -89,7 +88,7 @@ void Game::nextGeneration(GameParameters* gameParameters)
 	gameParameters->background = newBackground;
 }
 
-int Game::countAliveAdjacent(GameParameters* gameParameters, int i, int j)
+int Game::countAliveAdjacent(int i, int j)
 {
 	int count = 0;
 	
@@ -107,7 +106,7 @@ int Game::countAliveAdjacent(GameParameters* gameParameters, int i, int j)
 }
 
 
-void Game::render(GameParameters* gameParameters)
+void Game::render()
 {
 	window->clear(sf::Color::White);
 
@@ -119,12 +118,12 @@ void Game::render(GameParameters* gameParameters)
 	}
 
 	if (showGenerationCounter) 
-		renderGenerationCounter(gameParameters);
+		renderGenerationCounter();
 
 	window->display();
 }
 
-void Game::renderGenerationCounter(GameParameters* gameParameters)
+void Game::renderGenerationCounter()
 {
 	std::stringstream ss;
 	ss.str("");

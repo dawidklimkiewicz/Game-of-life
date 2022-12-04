@@ -1,27 +1,28 @@
 #include "DrawingScreen.h"
 
-DrawingScreen::DrawingScreen(GameParameters* gameParameters)
+DrawingScreen::DrawingScreen(GameParameters* parameters, sf::RenderWindow* window)
 {
-	initWindow(gameParameters);
-	createBackground(gameParameters);
+	gameParameters = parameters;
+	this->window = window;
+	createBackground();
+	gameParameters->drawingScreenOpened = true;
 }
 
 
-DrawingScreen::~DrawingScreen()
+bool DrawingScreen::isOpen()
 {
-	delete window;
+	return gameParameters->drawingScreenOpened;
 }
 
-
-void DrawingScreen::update(GameParameters *gameParameters)
+void DrawingScreen::update()
 {
-	pollEvents(gameParameters);
+	pollEvents();
 	gameParameters->readMousePos(window);
-	colorAndErase(gameParameters);
+	colorAndErase();
 }
 
 
-void DrawingScreen::pollEvents(GameParameters* gameParameters)
+void DrawingScreen::pollEvents()
 {
 	sf::Event event;
 	while (window->pollEvent(event))
@@ -31,20 +32,19 @@ void DrawingScreen::pollEvents(GameParameters* gameParameters)
 
 		if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
-				window->close();
+				gameParameters->drawingScreenOpened = false;
 		}
 		
 	}
 }
 
 
-void DrawingScreen::colorAndErase(GameParameters* gameParameters)
+void DrawingScreen::colorAndErase()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
 		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
-		gameParameters->background[i][j].setColor(sf::Color::Black);
 		gameParameters->background[i][j].setIsAlive(true);
 	}
 
@@ -57,13 +57,7 @@ void DrawingScreen::colorAndErase(GameParameters* gameParameters)
 }
 
 
-void DrawingScreen::initWindow(GameParameters* gameParameters)
-{
-	window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
-}
-
-
-void DrawingScreen::createBackground(GameParameters* gameParameters)
+void DrawingScreen::createBackground()
 {
 	Entity entity;
 	entity.setSize(sf::Vector2f(window->getSize().x / (float)gameParameters->gameSize,
@@ -83,20 +77,18 @@ void DrawingScreen::createBackground(GameParameters* gameParameters)
 }
 
 
-void DrawingScreen::colorRandomEntities(GameParameters* gameParameters, sf::Color color)
+void DrawingScreen::colorRandomEntities()
 {
 	srand((unsigned)time(NULL));
 
 	for (unsigned i = 1; i < gameParameters->gameSize - 1; i++) {
 		for (unsigned j = 1; j < gameParameters->gameSize - 1; j++) {
 			if ((rand() % 100) < gameParameters->randomSpawnChance && !gameParameters->background[i][j].getIsAlive()) {
-				gameParameters->background[i][j].setColor(color);
 				gameParameters->background[i][j].setIsAlive(true);
 
 				for (unsigned k = i - 1; k <= i + 1; k++) {
 					for (unsigned l = j - 1; l <= j + 1; l++) {
 						if ((rand() % 100) < gameParameters->chanceSpawnAround) {
-							gameParameters->background[k][l].setColor(color);
 							gameParameters->background[k][l].setIsAlive(true);
 						}
 					}
@@ -107,7 +99,7 @@ void DrawingScreen::colorRandomEntities(GameParameters* gameParameters, sf::Colo
 }
 
 
-void DrawingScreen::render(GameParameters *gameParameters)
+void DrawingScreen::render()
 {
 	window->clear(sf::Color::White);
 

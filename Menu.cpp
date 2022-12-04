@@ -1,23 +1,31 @@
 #include "Menu.h"
 
 
-Menu::Menu(GameParameters* gameParameters)
+Menu::Menu(GameParameters* parameters, sf::RenderWindow *window)
 {
-	initWindow(gameParameters);
+	this->window = window;
+	gameParameters = parameters;
+	gameParameters->menuOpened = true;
 }
 
 Menu::~Menu()
 {
-	delete this->window;
+	
 }
 
-void Menu::update(GameParameters *gameParameters)
+bool Menu::isOpen()
 {
-	pollEvents(gameParameters);
+	return gameParameters->menuOpened;
+}
+
+
+void Menu::update()
+{
+	pollEvents();
 	gameParameters->readMousePos(window);
 }
 
-void Menu::pollEvents(GameParameters* gameParameters)
+void Menu::pollEvents()
 {
 	sf::Event event;
 	while (window->pollEvent(event))
@@ -27,7 +35,7 @@ void Menu::pollEvents(GameParameters* gameParameters)
 
 		if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
-				window->close();
+				gameParameters->menuOpened = false;
 		}
 
 		if (event.type == sf::Event::MouseButtonPressed)
@@ -41,14 +49,7 @@ void Menu::pollEvents(GameParameters* gameParameters)
 }
 
 
-void Menu::initWindow(GameParameters* gameParameters)
-{
-	window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
-	window->setFramerateLimit(60);
-}
-
-
-void Menu::render(GameParameters* gameParameters)
+void Menu::render()
 {
 	window->clear(sf::Color::White);
 

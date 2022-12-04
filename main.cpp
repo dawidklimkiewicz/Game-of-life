@@ -7,31 +7,47 @@
 int main()
 {
 	GameParameters *gameParameters = new GameParameters;
+	sf::RenderWindow *window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
 
-	Menu menu(gameParameters);
-	while (menu.window->isOpen())
+
+	if (gameParameters->gameState == 0)
 	{
-		menu.update(gameParameters);
-		menu.render(gameParameters);
+		Menu menu(gameParameters, window);
+		while (menu.isOpen())
+		{
+			menu.update();
+			menu.render();
+		}
+		gameParameters->gameState++;
 	}
 
 
-	DrawingScreen drawing(gameParameters);
-	drawing.colorRandomEntities(gameParameters);
-	while (drawing.window->isOpen())
+	if (gameParameters->gameState == 1)
 	{
-		drawing.update(gameParameters);
-		drawing.render(gameParameters);
+		DrawingScreen drawing(gameParameters, window);
+		drawing.colorRandomEntities();
+
+		while (drawing.isOpen())
+		{
+			drawing.update();
+			drawing.render();
+		}
+		gameParameters->gameState++;
 	}
 
 
-	Game game(gameParameters);
-
-	while (game.window->isOpen())
+	if (gameParameters->gameState == 2)
 	{
-		game.gameUpdate(gameParameters);
-		game.render(gameParameters);
+		Game game(gameParameters, window);
+		while (game.isOpen())
+		{
+			game.gameUpdate();
+			game.render();
+		}
+		gameParameters->gameState++;
 	}
+
 
 	delete gameParameters;
+	delete window;
 }

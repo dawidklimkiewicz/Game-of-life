@@ -11,7 +11,6 @@ class MenuLayout
 private:
 
 	sf::Text txtGameSize;
-
 	Button* btnSizeLess2 = new Button{ BUTTON_SIZE, BUTTON_COLOR, "-10", sf::Vector2f(0, 0) };
 	Button* btnSizeLess = new Button{ BUTTON_SIZE, BUTTON_COLOR, "-1", sf::Vector2f(0, 0) };
 	Button* btnSizeMore = new Button{ BUTTON_SIZE, BUTTON_COLOR, "+1", sf::Vector2f(0, 0) };
@@ -38,6 +37,7 @@ private:
 
 	Button* btnNext = new Button{ sf::Vector2f(200, 75), BUTTON_COLOR, "NEXT", sf::Vector2f(0, 0) };
 
+	//vector przyciskow
 	std::vector<Button*> buttons = { btnSizeMore, btnSizeMore2, btnSizeLess, btnSizeLess2,
 	btnDeltaTimeLess, btnDeltaTimeLess2, btnDeltaTimeMore, btnDeltaTimeMore2,
 	btnChanceLess, btnChanceLess2, btnChanceMore, btnChanceMore2,
@@ -45,7 +45,6 @@ private:
 	btnNext };
 
 public:
-
 	~MenuLayout();
 
 	void renderLayout(GameParameters* gameParameters, sf::RenderWindow* window);

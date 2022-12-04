@@ -13,7 +13,7 @@ public:
 
 	//CONSTRUCTOR
 
-	Entity(sf::Color c = sf::Color::White, sf::Vector2f s = sf::Vector2f(0.f, 0.f), bool a = false)
+	Entity(sf::Color c = sf::Color::Black, sf::Vector2f s = sf::Vector2f(0.f, 0.f), bool a = false)
 		:size(s), alive(a) {
 		rect.setFillColor(c);
 	}
