@@ -21,14 +21,13 @@ public:
 	void setColor(sf::Color newColor);
 	void setIsAlive(bool newState);
     
-	//setters to avoid using entity.rect.
+	//setters - to avoid using entity.rect.
 
 	void setSize(sf::Vector2f newSize);
 	void setSize(float x);
 	void setPosition(sf::Vector2f newPos);
 	void setPosition(float x, float y);
 
-	//getters
 
 	sf::Color getColor();
 	sf::Vector2f getSize();

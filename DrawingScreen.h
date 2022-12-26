@@ -21,7 +21,7 @@ public:
 	bool isOpen();
 	void update();
 	void pollEvents();
-	void colorAndErase();
+	void colorAndErase();		// lewy przycisk - dodanie pola, prawy - usuniecie
 
 	void createBackground();
 	void colorRandomEntities();

@@ -1,23 +1,16 @@
 #include "Menu.h"
 
-
-Menu::Menu(GameParameters* parameters, sf::RenderWindow *window)
+Menu::Menu(GameParameters* parameters, sf::RenderWindow* window)
 {
 	this->window = window;
 	gameParameters = parameters;
 	gameParameters->menuOpened = true;
 }
 
-Menu::~Menu()
-{
-	
-}
-
 bool Menu::isOpen()
 {
 	return gameParameters->menuOpened;
 }
-
 
 void Menu::update()
 {
@@ -31,11 +24,10 @@ void Menu::pollEvents()
 	while (window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
+		{
+			gameParameters->gameState = -1;
+			gameParameters->menuOpened = false;
 			window->close();
-
-		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
-				gameParameters->menuOpened = false;
 		}
 
 		if (event.type == sf::Event::MouseButtonPressed)
@@ -48,7 +40,6 @@ void Menu::pollEvents()
 	}
 }
 
-
 void Menu::render()
 {
 	window->clear(sf::Color::White);
@@ -57,4 +48,3 @@ void Menu::render()
 
 	window->display();
 }
-

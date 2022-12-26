@@ -8,13 +8,9 @@ Game::Game(GameParameters* parameters, sf::RenderWindow* window)
 	generationCounter = 0;
 	showGenerationCounter = false;
 	paused = false;
-	gameParameters->gameOpened = true;
+	gameParameters->gameOpened = false;
 }
 
-Game::~Game()
-{
-
-}
 
 void Game::pollEvents()
 {
@@ -22,11 +18,19 @@ void Game::pollEvents()
 	while (window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
+		{
+			gameParameters->gameState = -1;
+			gameParameters->gameOpened = false;
 			window->close();
+		}
 
 		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Enter)
+			if (event.key.code == sf::Keyboard::Escape) {
+				paused = true;
 				gameParameters->gameOpened = false;
+				gameParameters->menuOpened = true;
+				gameParameters->gameState = 0;
+			}
 
 			if (event.key.code == sf::Keyboard::Space)
 				paused = !paused;
@@ -42,6 +46,7 @@ void Game::gameUpdate()
 {
 	pollEvents();
 	gameParameters->readMousePos(window);
+	colorAndErase();
 
 	//create next generation after deltaTime
 	if (!paused && clock.getElapsedTime().asSeconds() > gameParameters->deltaTime) {
@@ -50,6 +55,29 @@ void Game::gameUpdate()
 		clock.restart();
 	}
 	
+}
+
+void Game::colorAndErase()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
+		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+
+		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
+		{
+			gameParameters->background[i][j].setIsAlive(true);
+		}
+			
+	}
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
+		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+
+		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
+			gameParameters->background[i][j].setIsAlive(false);
+	}
+
 }
 
 
@@ -74,13 +102,11 @@ void Game::nextGeneration()
 
 			else if (!gameParameters->background[i][j].getIsAlive() && adjacent == 3) {
 				newBackground[i][j].setIsAlive(true);
-				newBackground[i][j].setColor(sf::Color::Black);
 			} 
 
 			
 			else {
 				newBackground[i][j].setIsAlive(false);
-				newBackground[i][j].setColor(sf::Color::White);
 			}
 		}
 	}

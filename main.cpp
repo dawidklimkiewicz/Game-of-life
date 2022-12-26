@@ -1,7 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
-#include "Menu.h"
+#include "Options.h"
 #include "DrawingScreen.h"
+#include "Menu.h"
 #include "GameParameters.h"
 #include "Icon.h"
 
@@ -15,45 +16,78 @@ int main()
 	icon.loadFromMemory(logo_png, logo_png_len);
 	window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
+	Menu menu(gameParameters, window);
+	Options options(gameParameters, window);
+	DrawingScreen drawing(gameParameters, window);
+	drawing.colorRandomEntities();
+	Game game(gameParameters, window);
+	
+	
 
-	if (gameParameters->gameState == 0)
+	while (gameParameters->gameState >= 0)
 	{
-		Menu menu(gameParameters, window);
-		while (menu.isOpen())
+		if (gameParameters->gameState == 0)
 		{
-			menu.update();
-			menu.render();
+			while (menu.isOpen())
+			{
+				menu.update();
+				menu.render();
+			}
 		}
-		gameParameters->gameState++;
-	}
 
 
-	if (gameParameters->gameState == 1)
-	{
-		DrawingScreen drawing(gameParameters, window);
-		drawing.colorRandomEntities();
-
-		while (drawing.isOpen())
+		if (gameParameters->gameState == 3)
 		{
-			drawing.update();
-			drawing.render();
+			while (options.isOpen())
+			{
+				options.update();
+				options.render();
+			}
 		}
-		gameParameters->gameState++;
-	}
 
 
-	if (gameParameters->gameState == 2)
-	{
-		Game game(gameParameters, window);
-		while (game.isOpen())
+		if (gameParameters->gameState == 1)
 		{
-			game.gameUpdate();
-			game.render();
+			if (gameParameters->optionsChanged)
+			{
+				DrawingScreen drawing(gameParameters, window);
+				gameParameters->drawingScreenOpened = true;
+
+				drawing.colorRandomEntities();
+
+				while (drawing.isOpen())
+				{
+					drawing.update();
+					drawing.render();
+				}
+
+				gameParameters->optionsChanged = false;
+			}
+			else
+			{
+				while (drawing.isOpen())
+				{
+					drawing.update();
+					drawing.render();
+				}
+			}
+
 		}
-		gameParameters->gameState++;
+
+
+		if (gameParameters->gameState == 2)
+		{
+			while (game.isOpen())
+			{
+				game.gameUpdate();
+				game.render();
+			}
+		}
 	}
 
 
 	delete gameParameters;
 	delete window;
+
+	return 0;
 }

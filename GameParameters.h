@@ -21,13 +21,17 @@ public:
 	sf::Font font;
 	sf::Text mousePosText;
 
+	bool optionsChanged;	// czy zrobiono zmiany w opcjach
+							// jezeli nie to uklad pozostaje bez zmian
+							// jezeli tak to trzeba stworzyc nowy uklad
 	bool menuOpened;
+	bool optionsOpened;
 	bool drawingScreenOpened;
 	bool gameOpened;
 
 	float deltaTime;
 	unsigned gameSize;
-	unsigned gameState;
+	int gameState;
 	int randomSpawnChance;
 	int chanceSpawnAround;
 	std::vector<std::vector<Entity>> background;

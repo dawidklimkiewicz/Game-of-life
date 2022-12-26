@@ -12,6 +12,7 @@ GameParameters::GameParameters()
 	gameState = 0;
 
 	menuOpened = false;
+	optionsOpened = false;
 	drawingScreenOpened = false;
 	gameOpened = false;
 }

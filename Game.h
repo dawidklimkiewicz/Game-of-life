@@ -24,12 +24,12 @@ public:
 	sf::RenderWindow *window;
 
 	Game(GameParameters* parameters, sf::RenderWindow* window);
-	~Game();
 
 	//updates state of the app
 
 	void pollEvents();
 	void gameUpdate();
+	void colorAndErase();
 
 
 	bool isOpen();

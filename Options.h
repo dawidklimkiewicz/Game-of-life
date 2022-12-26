@@ -1,24 +1,24 @@
 #pragma once
 
-
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
 #include "Button.h"
 #include "GameParameters.h"
-#include "MenuLayout.h"
+#include "OptionsLayout.h"
 
-class Menu
+
+class Options
 {
 private:
 
 	GameParameters* gameParameters;
-	MenuLayout menuLayout;
+	OptionsLayout optionsLayout;
 
 public:
 	sf::RenderWindow* window;
 
-	Menu(GameParameters* parameters, sf::RenderWindow* window);
+	Options(GameParameters* parameters, sf::RenderWindow *window);
 
 	bool isOpen();
 	void update();

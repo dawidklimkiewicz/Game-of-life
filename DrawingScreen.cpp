@@ -5,7 +5,7 @@ DrawingScreen::DrawingScreen(GameParameters* parameters, sf::RenderWindow* windo
 	gameParameters = parameters;
 	this->window = window;
 	createBackground();
-	gameParameters->drawingScreenOpened = true;
+	gameParameters->drawingScreenOpened = false;
 }
 
 
@@ -28,11 +28,27 @@ void DrawingScreen::pollEvents()
 	while (window->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
+		{
+			gameParameters->gameState = -1;
+			gameParameters->drawingScreenOpened = false;
 			window->close();
+		}
 
 		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
+
+			if (event.key.code == sf::Keyboard::Escape)
+			{
 				gameParameters->drawingScreenOpened = false;
+				gameParameters->menuOpened = true;
+				gameParameters->gameState = 0;
+			}
+
+			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
+			{
+				gameParameters->drawingScreenOpened = false;
+				gameParameters->gameOpened = true;
+				gameParameters->gameState = 2;
+			}
 		}
 		
 	}
@@ -61,6 +77,9 @@ void DrawingScreen::colorAndErase()
 
 void DrawingScreen::createBackground()
 {
+	// czyszczenie wektora na wypadek zmiany rozmiaru
+	gameParameters->background.clear();
+
 	Entity entity;
 	entity.setSize(sf::Vector2f(window->getSize().x / (float)gameParameters->gameSize,
 		window->getSize().y / (float)gameParameters->gameSize));
