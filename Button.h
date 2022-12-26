@@ -4,8 +4,9 @@
 #include <iostream>
 
 #include <SFML/Graphics.hpp>
+#include "Font.h"
 
-#define FONT_PATH "Fonts/Roboto-Regular.ttf"
+//#define FONT_PATH "Fonts/Roboto-Regular.ttf"
 
 class Button
 {

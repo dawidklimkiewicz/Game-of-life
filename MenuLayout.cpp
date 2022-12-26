@@ -19,21 +19,21 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 	window->draw(txtGameSize);
 
 	ss.str("");
-	ss << "Time between generations in seconds: " << gameParameters->deltaTime;
+	ss << "Time between iterations in seconds: " << gameParameters->deltaTime;
 	gameParameters->initFont(txtDeltaTime);
 	txtDeltaTime.setString(ss.str());
 	txtDeltaTime.setPosition((window->getSize().x / 2) - txtDeltaTime.getGlobalBounds().width / 2, 200);
 	window->draw(txtDeltaTime);
 
 	ss.str("");
-	ss << "Chance for a cell to spawn: " << gameParameters->randomSpawnChance << "%";
+	ss << "Chance of random cell placement: " << gameParameters->randomSpawnChance << "%";
 	gameParameters->initFont(txtRandomSpawnChance);
 	txtRandomSpawnChance.setString(ss.str());
 	txtRandomSpawnChance.setPosition((window->getSize().x / 2) - txtRandomSpawnChance.getGlobalBounds().width / 2, 350);
 	window->draw(txtRandomSpawnChance);
 
 	ss.str("");
-	ss << "Chance to spawn another cell nearby: " << gameParameters->chanceSpawnAround << "%";
+	ss << "Chance to place another cell nearby: " << gameParameters->chanceSpawnAround << "%";
 	gameParameters->initFont(txtChanceSpawnAround);
 	txtChanceSpawnAround.setString(ss.str());
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);

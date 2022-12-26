@@ -45,14 +45,16 @@ void DrawingScreen::colorAndErase()
 		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
 		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
-		gameParameters->background[i][j].setIsAlive(true);
+		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
+			gameParameters->background[i][j].setIsAlive(true);
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
 		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
 		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
-		gameParameters->background[i][j].setIsAlive(false);
+		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
+			gameParameters->background[i][j].setIsAlive(false);
 	}
 }
 

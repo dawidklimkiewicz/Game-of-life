@@ -147,6 +147,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="DrawingScreen.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Icon.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameParameters.h" />
     <ClInclude Include="Menu.h" />

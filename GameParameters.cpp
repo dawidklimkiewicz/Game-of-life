@@ -18,7 +18,7 @@ GameParameters::GameParameters()
 
 void GameParameters::initFont(sf::Text& txt)
 {
-	if (font.loadFromFile(FONT_PATH)) {
+	if (font.loadFromMemory(&Roboto_Regular_ttf, Roboto_Regular_ttf_len)) {
 		txt.setString("NULL");
 		txt.setFont(font);
 		txt.setCharacterSize(32);

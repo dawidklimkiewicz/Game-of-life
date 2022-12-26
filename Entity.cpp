@@ -1,8 +1,6 @@
 #include "Entity.h"
 
 
-// SETTERS
-
 void Entity::setColor(sf::Color newColor)
 {
 	rect.setFillColor(newColor);
@@ -38,7 +36,6 @@ void Entity::setPosition(float x, float y)
 
 
 
-//GETTERS
 
 sf::Color Entity::getColor()
 {

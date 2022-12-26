@@ -3,11 +3,17 @@
 #include "Menu.h"
 #include "DrawingScreen.h"
 #include "GameParameters.h"
+#include "Icon.h"
 
 int main()
 {
 	GameParameters *gameParameters = new GameParameters;
 	sf::RenderWindow *window = new sf::RenderWindow(gameParameters->videoMode, "GAME OF LIFE");
+
+	// ustawienie ikony
+	sf::Image icon;
+	icon.loadFromMemory(logo_png, logo_png_len);
+	window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 
 	if (gameParameters->gameState == 0)

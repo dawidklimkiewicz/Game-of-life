@@ -13,7 +13,7 @@ Button::Button(sf::Vector2f size, sf::Color color, std::string txt, sf::Vector2f
 
 void Button::initFont()
 {
-	if (font.loadFromFile(FONT_PATH)) {
+	if (font.loadFromMemory(&Roboto_Regular_ttf, Roboto_Regular_ttf_len)) {
 		text.setFont(font);
 		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);

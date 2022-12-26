@@ -1,7 +1,5 @@
 #pragma once
 
-#define FONT_PATH "Fonts/Roboto-Regular.ttf"
-
 #include <sstream>
 #include <vector>
 #include <time.h>

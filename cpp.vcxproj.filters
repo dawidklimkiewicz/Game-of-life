@@ -62,5 +62,11 @@
     <ClInclude Include="GameParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

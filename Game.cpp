@@ -60,7 +60,7 @@ bool Game::isOpen()
 
 void Game::nextGeneration()
 {
-	std::vector<std::vector<Entity>> newBackground(gameParameters->background);	//copy of background
+	std::vector<std::vector<Entity>> newBackground(gameParameters->background);	//copy background
 
 	for (unsigned i = 0; i < gameParameters->gameSize; i++)
 	{
