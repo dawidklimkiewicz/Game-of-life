@@ -62,7 +62,7 @@ void OptionsLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindo
 	btnChanceAroundMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 550));
 	btnChanceAroundMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 550));
 
-	btnNext->setPosition(sf::Vector2f((window->getSize().x / 2) - btnNext->getButton().getGlobalBounds().width / 2, 725));
+	btnBack->setPosition(sf::Vector2f((window->getSize().x / 2) - btnBack->getButton().getGlobalBounds().width / 2, 725));
 
 	for (auto btn : buttons) {
 		btn->renderButton(window);
@@ -121,21 +121,25 @@ void OptionsLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWin
 	// obsluga przyciskwow do zmiany szansy
 
 	if (btnChanceMore->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->randomSpawnChance++;
 		if (gameParameters->randomSpawnChance > 100) gameParameters->randomSpawnChance = 100;
 	}
 
 	if (btnChanceMore2->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->randomSpawnChance += 10;
 		if (gameParameters->randomSpawnChance > 100) gameParameters->randomSpawnChance = 100;
 	}
 
 	if (btnChanceLess->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->randomSpawnChance--;
 		if (gameParameters->randomSpawnChance < 0) gameParameters->randomSpawnChance = 0;
 	}
 
 	if (btnChanceLess2->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->randomSpawnChance -= 10;
 		if (gameParameters->randomSpawnChance < 0) gameParameters->randomSpawnChance = 0;
 	}
@@ -144,28 +148,32 @@ void OptionsLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWin
 	// obsluga przyciskwow do zmiany szansy dookola
 
 	if (btnChanceAroundMore->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->chanceSpawnAround++;
 		if (gameParameters->chanceSpawnAround > 100) gameParameters->chanceSpawnAround = 100;
 	}
 
 	if (btnChanceAroundMore2->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->chanceSpawnAround += 10;
 		if (gameParameters->chanceSpawnAround > 100) gameParameters->chanceSpawnAround = 100;
 	}
 
 	if (btnChanceAroundLess->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->chanceSpawnAround--;
 		if (gameParameters->chanceSpawnAround < 0) gameParameters->chanceSpawnAround = 0;
 	}
 
 	if (btnChanceAroundLess2->isMouseOver(gameParameters->mousePos)) {
+		gameParameters->optionsChanged = true;
 		gameParameters->chanceSpawnAround -= 10;
 		if (gameParameters->chanceSpawnAround < 0) gameParameters->chanceSpawnAround = 0;
 	}
 
 
 
-	if (btnNext->isMouseOver(gameParameters->mousePos))
+	if (btnBack->isMouseOver(gameParameters->mousePos))
 	{
 		gameParameters->optionsOpened = false;
 		gameParameters->menuOpened = true;

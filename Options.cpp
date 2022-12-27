@@ -34,8 +34,11 @@ void Options::pollEvents()
 		}
 
 		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
+			if (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Backspace) {
+				gameParameters->gameState = 0;
 				gameParameters->optionsOpened = false;
+				gameParameters->menuOpened = true;
+			}
 		}
 
 		if (event.type == sf::Event::MouseButtonPressed)

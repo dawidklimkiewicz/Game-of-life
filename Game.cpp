@@ -1,16 +1,25 @@
 #include "Game.h"
+#include "Shapes.h"
 #include <iostream>
 
 Game::Game(GameParameters* parameters, sf::RenderWindow* window)
 {
 	gameParameters = parameters;
 	this->window = window;
+
 	generationCounter = 0;
+	shapeSelected = -1;
 	showGenerationCounter = false;
-	paused = false;
+	paused = true;
 	gameParameters->gameOpened = false;
+
+	createBackground();
 }
 
+bool Game::isOpen()
+{
+	return gameParameters->gameOpened;
+}
 
 void Game::pollEvents()
 {
@@ -25,24 +34,57 @@ void Game::pollEvents()
 		}
 
 		if (event.type == sf::Event::KeyPressed) {
-			if (event.key.code == sf::Keyboard::Escape) {
+
+			if (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Backspace) {
 				paused = true;
 				gameParameters->gameOpened = false;
 				gameParameters->menuOpened = true;
 				gameParameters->gameState = 0;
 			}
 
-			if (event.key.code == sf::Keyboard::Space)
+			if (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Enter)
 				paused = !paused;
 
 			if (event.key.code == sf::Keyboard::G)
 				showGenerationCounter = !showGenerationCounter;
+
+		}
+
+		// wczytanie numeru 0-9 jako -1 do 8 ze wzgledu na konstrukcje tablicy shapes
+
+		if (event.type == sf::Event::TextEntered) {
+			wchar_t ch = event.text.unicode - 48;
+			if (ch >= 0 && ch <= 9) {
+				shapeSelected = static_cast<int>(ch) - 1;
+			}
+		}
+
+
+		// narysowanie ksztaltu bez przytrzymywania myszy
+
+		if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left
+			&& shapeSelected != -1) {
+
+			int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
+			int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+
+			for (int k = 0; k < shapeSize; k++) {
+				for (int l = 0; l < shapeSize; l++) {
+					if (shapes[shapeSelected][k][l]) {
+						int x = wrap(i+k);
+						int y = wrap(j+l);
+
+						gameParameters->background[x][y].setIsAlive(true);
+					}
+
+				}
+			}
 		}
 
 	}
 }
 
-void Game::gameUpdate()
+void Game::update()
 {
 	pollEvents();
 	gameParameters->readMousePos(window);
@@ -60,19 +102,21 @@ void Game::gameUpdate()
 void Game::colorAndErase()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
-		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+		unsigned int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
+		unsigned int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
 		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
 		{
-			gameParameters->background[i][j].setIsAlive(true);
+			if (shapeSelected == -1) {
+				gameParameters->background[i][j].setIsAlive(true);
+			}
 		}
 			
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-		int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
-		int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+		unsigned int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
+		unsigned int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
 		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
 			gameParameters->background[i][j].setIsAlive(false);
@@ -80,11 +124,6 @@ void Game::colorAndErase()
 
 }
 
-
-bool Game::isOpen()
-{
-	return gameParameters->gameOpened;
-}
 
 void Game::nextGeneration()
 {
@@ -114,21 +153,83 @@ void Game::nextGeneration()
 	gameParameters->background = newBackground;
 }
 
+int Game::wrap(int a)
+{
+	if (a < 0) {
+		return gameParameters->gameSize + a;
+	}
+
+	if (a >= gameParameters->gameSize) {
+		return a - gameParameters->gameSize;
+	}
+
+	else {
+		return a;
+	}
+}
+
 int Game::countAliveAdjacent(int i, int j)
 {
 	int count = 0;
 	
 	for (int k = i - 1; k <= i + 1; k++) {
 		for (int l = j - 1; l <= j + 1; l++) {
-			if (k < 0 || k >= gameParameters->gameSize || l < 0 || l >= gameParameters->gameSize)
-				continue;
 			
-			if (gameParameters->background[k][l].getIsAlive())
+			int x = wrap(k);
+			int y = wrap(l);
+
+			if (gameParameters->background[x][y].getIsAlive())
 				count++;
 		}
 	}
 
 	return count;
+}
+
+void Game::createBackground()
+{
+	// czyszczenie wektora na wypadek zmiany rozmiaru
+	gameParameters->background.clear();
+
+	Entity entity;
+	entity.setSize(sf::Vector2f(window->getSize().x / (float)gameParameters->gameSize,
+		window->getSize().y / (float)gameParameters->gameSize));
+
+
+	for (unsigned j = 0; j < gameParameters->gameSize; j++)
+	{
+		std::vector<Entity> row;
+		for (unsigned i = 0; i < gameParameters->gameSize; i++)
+		{
+			entity.setPosition(sf::Vector2f(i * entity.getSize().x, j * entity.getSize().y));
+			row.push_back(entity);
+		}
+		gameParameters->background.push_back(row);
+	}
+}
+
+void Game::colorRandomEntities()
+{
+	srand((unsigned)time(NULL));
+
+	for (int i = 0; i < gameParameters->gameSize; i++) {
+		for (int j = 0; j < gameParameters->gameSize; j++) {
+			if ((rand() % 100) < gameParameters->randomSpawnChance && !gameParameters->background[i][j].getIsAlive()) {
+				gameParameters->background[i][j].setIsAlive(true);
+
+				for (int k = i - 1; k <= i + 1; k++) {
+					for (int l = j - 1; l <= j + 1; l++) {
+						if ((rand() % 100) < gameParameters->chanceSpawnAround) {
+
+							int x = wrap(k);
+							int y = wrap(l);
+							gameParameters->background[x][y].setIsAlive(true);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 

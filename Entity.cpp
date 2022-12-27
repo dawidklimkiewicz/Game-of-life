@@ -1,10 +1,6 @@
 #include "Entity.h"
 
 
-void Entity::setColor(sf::Color newColor)
-{
-	rect.setFillColor(newColor);
-}
 
 void Entity::setIsAlive(bool newState)
 {
@@ -36,11 +32,6 @@ void Entity::setPosition(float x, float y)
 
 
 
-
-sf::Color Entity::getColor()
-{
-	return rect.getFillColor();
-}
 
 sf::Vector2f Entity::getSize()
 {

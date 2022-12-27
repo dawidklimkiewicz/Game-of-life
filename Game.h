@@ -16,6 +16,7 @@ private:
 	sf::Clock clock;
 	GameParameters* gameParameters;
 
+	int shapeSelected;
 	int generationCounter;
 	bool showGenerationCounter;
 	bool paused;
@@ -25,16 +26,17 @@ public:
 
 	Game(GameParameters* parameters, sf::RenderWindow* window);
 
-	//updates state of the app
-
+	bool isOpen();
 	void pollEvents();
-	void gameUpdate();
+	void update();
 	void colorAndErase();
 
 
-	bool isOpen();
-	void nextGeneration();		//next iteration of the simulation
+	void nextGeneration();
+	int wrap(int a);
 	int countAliveAdjacent(int i, int j);
+	void createBackground();
+	void colorRandomEntities();
 
 	void render();
 	void renderGenerationCounter();

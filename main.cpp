@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
 #include "Options.h"
-#include "DrawingScreen.h"
 #include "Menu.h"
 #include "GameParameters.h"
 #include "Icon.h"
@@ -18,10 +17,8 @@ int main()
 
 	Menu menu(gameParameters, window);
 	Options options(gameParameters, window);
-	DrawingScreen drawing(gameParameters, window);
-	drawing.colorRandomEntities();
 	Game game(gameParameters, window);
-	
+	game.colorRandomEntities();
 	
 
 	while (gameParameters->gameState >= 0)
@@ -36,51 +33,42 @@ int main()
 		}
 
 
-		if (gameParameters->gameState == 3)
-		{
-			while (options.isOpen())
-			{
-				options.update();
-				options.render();
-			}
-		}
-
-
 		if (gameParameters->gameState == 1)
 		{
+			// stworz nowy obiekt Game jezeli dokonano zmian ustawien
 			if (gameParameters->optionsChanged)
 			{
-				DrawingScreen drawing(gameParameters, window);
-				gameParameters->drawingScreenOpened = true;
+				Game game(gameParameters, window);
+				gameParameters->gameOpened = true;
 
-				drawing.colorRandomEntities();
+				game.colorRandomEntities();
 
-				while (drawing.isOpen())
+				while (game.isOpen())
 				{
-					drawing.update();
-					drawing.render();
+					game.update();
+					game.render();
 				}
 
 				gameParameters->optionsChanged = false;
 			}
 			else
 			{
-				while (drawing.isOpen())
+				while (game.isOpen())
 				{
-					drawing.update();
-					drawing.render();
+					game.update();
+					game.render();
 				}
 			}
 
 		}
 
 
-		if (gameParameters->gameState == 2)
+		if (gameParameters->gameState == 3)
 		{
-			while (game.isOpen())
+			while (options.isOpen())
 			{
-				game.gameUpdate();
-				game.render();
+				options.update();
+				options.render();
 			}
 		}
 	}

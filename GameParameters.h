@@ -39,6 +39,4 @@ public:
 	void initFont(sf::Text& txt);
 
 	void readMousePos(sf::RenderWindow* window);
-	void printMousePos(sf::RenderWindow* window);
-
 };
