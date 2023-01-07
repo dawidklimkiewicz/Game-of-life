@@ -18,9 +18,8 @@ public:
 
 	void setIsAlive(bool newState);
 	void setSize(sf::Vector2f newSize);
-	void setSize(float x);
 	void setPosition(sf::Vector2f newPos);
-	void setPosition(float x, float y);
+	void setColor(sf::Color color);
 
 
 	sf::Vector2f getSize();

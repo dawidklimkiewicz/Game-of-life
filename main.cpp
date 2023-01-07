@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
-#include "Options.h"
 #include "Menu.h"
+#include "Options.h"
 #include "GameParameters.h"
 #include "Icon.h"
+
 
 int main()
 {
@@ -19,7 +20,7 @@ int main()
 	Options options(gameParameters, window);
 	Game game(gameParameters, window);
 	game.colorRandomEntities();
-	
+
 
 	while (gameParameters->gameState >= 0)
 	{
@@ -76,6 +77,7 @@ int main()
 
 	delete gameParameters;
 	delete window;
+
 
 	return 0;
 }

@@ -6,7 +6,6 @@
 #include "Entity.h"
 #include "Font.h"
 
-//#define FONT_PATH "Fonts/Roboto-Regular.ttf"
 
 class GameParameters
 {
@@ -19,14 +18,10 @@ public:
 	sf::VideoMode videoMode;
 	sf::Vector2f mousePos;
 	sf::Font font;
-	sf::Text mousePosText;
 
-	bool optionsChanged;	// czy zrobiono zmiany w opcjach
-							// jezeli nie to uklad pozostaje bez zmian
-							// jezeli tak to trzeba stworzyc nowy uklad
+	bool optionsChanged;
 	bool menuOpened;
 	bool optionsOpened;
-	bool drawingScreenOpened;
 	bool gameOpened;
 
 	float deltaTime;
@@ -34,6 +29,8 @@ public:
 	int gameState;
 	int randomSpawnChance;
 	int chanceSpawnAround;
+	int currentX;
+	int currentY;
 	std::vector<std::vector<Entity>> background;
 
 	void initFont(sf::Text& txt);

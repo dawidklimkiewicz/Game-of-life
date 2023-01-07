@@ -33,6 +33,8 @@ void Game::pollEvents()
 			window->close();
 		}
 
+		// obsluga klaiwszy ESC, backspace, spacja, enter, G
+
 		if (event.type == sf::Event::KeyPressed) {
 
 			if (event.key.code == sf::Keyboard::Escape || event.key.code == sf::Keyboard::Backspace) {
@@ -60,21 +62,18 @@ void Game::pollEvents()
 		}
 
 
-		// narysowanie ksztaltu bez przytrzymywania myszy
+		// narysowanie ksztaltu (bez przytrzymywania myszy)
 
 		if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left
 			&& shapeSelected != -1) {
 
-			int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
-			int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
-
 			for (int k = 0; k < shapeSize; k++) {
 				for (int l = 0; l < shapeSize; l++) {
 					if (shapes[shapeSelected][k][l]) {
-						int x = wrap(i+k);
-						int y = wrap(j+l);
+						int y = wrap(gameParameters->currentY + k);
+						int x = wrap(gameParameters->currentX + l);
 
-						gameParameters->background[x][y].setIsAlive(true);
+						gameParameters->background[y][x].setIsAlive(true);
 					}
 
 				}
@@ -88,6 +87,8 @@ void Game::update()
 {
 	pollEvents();
 	gameParameters->readMousePos(window);
+	gameParameters->currentY = int(gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y);
+	gameParameters->currentX = int(gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x);
 	colorAndErase();
 
 	//create next generation after deltaTime
@@ -101,25 +102,25 @@ void Game::update()
 
 void Game::colorAndErase()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		unsigned int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
-		unsigned int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
+	if (shapeSelected == -1) {
 
-		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
-		{
-			if (shapeSelected == -1) {
-				gameParameters->background[i][j].setIsAlive(true);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+			if (gameParameters->currentY < gameParameters->gameSize && gameParameters->currentX < gameParameters->gameSize) {
+				gameParameters->background[gameParameters->currentY][gameParameters->currentX].setIsAlive(true);
 			}
-		}
 			
+		}
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
-		unsigned int i = gameParameters->mousePos.y / gameParameters->background[0][0].getSize().y;
-		unsigned int j = gameParameters->mousePos.x / gameParameters->background[0][0].getSize().x;
 
-		if (i >= 0 && j >= 0 && i < gameParameters->gameSize && j < gameParameters->gameSize)
-			gameParameters->background[i][j].setIsAlive(false);
+		if (gameParameters->currentY >= 0 && gameParameters->currentX >= 0 &&
+			gameParameters->currentY < gameParameters->gameSize && 
+			gameParameters->currentX < gameParameters->gameSize) 
+		{
+			gameParameters->background[gameParameters->currentY][gameParameters->currentX].setIsAlive(false);
+		}
 	}
 
 }
@@ -217,13 +218,16 @@ void Game::colorRandomEntities()
 			if ((rand() % 100) < gameParameters->randomSpawnChance && !gameParameters->background[i][j].getIsAlive()) {
 				gameParameters->background[i][j].setIsAlive(true);
 
-				for (int k = i - 1; k <= i + 1; k++) {
-					for (int l = j - 1; l <= j + 1; l++) {
-						if ((rand() % 100) < gameParameters->chanceSpawnAround) {
+				if (gameParameters->chanceSpawnAround > 0) {
 
-							int x = wrap(k);
-							int y = wrap(l);
-							gameParameters->background[x][y].setIsAlive(true);
+					for (int k = i - 1; k <= i + 1; k++) {
+						for (int l = j - 1; l <= j + 1; l++) {
+							if ((rand() % 100) < gameParameters->chanceSpawnAround) {
+
+								int x = wrap(k);
+								int y = wrap(l);
+								gameParameters->background[x][y].setIsAlive(true);
+							}
 						}
 					}
 				}
@@ -246,6 +250,25 @@ void Game::render()
 
 	if (showGenerationCounter) 
 		renderGenerationCounter();
+
+
+	// podglad wybranego ksztaltu
+	if (shapeSelected != -1) {
+
+		for (int k = 0; k < shapeSize; k++) {
+			for (int l = 0; l < shapeSize; l++) {
+				if (shapes[shapeSelected][k][l]) {
+					int x = wrap(gameParameters->currentY + k);
+					int y = wrap(gameParameters->currentX + l);
+
+					Entity e(gameParameters->background[x][y]);
+					e.setColor(sf::Color(128, 128, 128));
+					window->draw(e.getRect());
+				}
+
+			}
+		}
+	}
 
 	window->display();
 }

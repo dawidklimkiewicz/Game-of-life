@@ -20,9 +20,10 @@ private:
 	int generationCounter;
 	bool showGenerationCounter;
 	bool paused;
+	sf::RenderWindow* window;
 
 public:
-	sf::RenderWindow *window;
+	
 
 	Game(GameParameters* parameters, sf::RenderWindow* window);
 

@@ -2,7 +2,7 @@
 
 GameParameters::GameParameters()
 {
-	deltaTime = 0.1;
+	deltaTime = 0.1f;
 	gameSize = 100;
 	randomSpawnChance = 5;
 	chanceSpawnAround = 25;
@@ -10,11 +10,12 @@ GameParameters::GameParameters()
 	videoMode.width = 900;
 	videoMode.height = 900;
 	gameState = 0;
+	currentX = 0;
+	currentY = 0;
 
 	optionsChanged = false;
 	menuOpened = false;
 	optionsOpened = false;
-	drawingScreenOpened = false;
 	gameOpened = false;
 }
 

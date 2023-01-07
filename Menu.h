@@ -14,9 +14,9 @@ private:
 
 	GameParameters* gameParameters;
 	MenuLayout menuLayout;
+	sf::RenderWindow* window;
 
 public:
-	sf::RenderWindow* window;
 
 	Menu(GameParameters* parameters, sf::RenderWindow* window);
 

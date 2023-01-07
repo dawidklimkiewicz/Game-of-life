@@ -13,22 +13,17 @@ void Entity::setSize(sf::Vector2f newSize)
 	rect.setSize(newSize);
 }
 
-void Entity::setSize(float x)
-{
-	size.x = x;
-	size.y = x;
-	rect.setSize(sf::Vector2f(x, x));
-}
 
 void Entity::setPosition(sf::Vector2f newPos)
 {
 	rect.setPosition(newPos);
 }
 
-void Entity::setPosition(float x, float y)
+void Entity::setColor(sf::Color color)
 {
-	rect.setPosition(sf::Vector2f(x, y));
+	rect.setFillColor(color);
 }
+
 
 
 

@@ -22,18 +22,15 @@ public:
 
 	void initFont();
 
-	void setSize(int width, int height);
 	void setSize(sf::Vector2f newSize);
 	void setColor(sf::Color color);
 	void setText(std::string text);
 	void setTextColor(sf::Color color, sf::Color outline);
 	void setFontSize(int size);
-	void setPosition(float x, float y);
 	void setPosition(sf::Vector2f newPos);
 
 	sf::RectangleShape getButton();
 	bool isMouseOver(sf::Vector2f mousePos);
-	void clicked();
 
 	void renderButton(sf::RenderWindow *window);
 };

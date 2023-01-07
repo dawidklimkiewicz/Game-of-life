@@ -14,9 +14,9 @@ private:
 
 	GameParameters* gameParameters;
 	OptionsLayout optionsLayout;
+	sf::RenderWindow* window;
 
 public:
-	sf::RenderWindow* window;
 
 	Options(GameParameters* parameters, sf::RenderWindow *window);
 

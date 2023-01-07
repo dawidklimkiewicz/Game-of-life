@@ -18,13 +18,9 @@ void Button::initFont()
 		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);
 	}
-	else std::cout << "ERROR: Game::initText() - font not loaded\n";
+	//else std::cout << "ERROR: Game::initText() - font not loaded\n";
 }
 
-void Button::setSize(int width, int height)
-{
-	rect.setSize(sf::Vector2f(width, height));
-}
 
 void Button::setSize(sf::Vector2f newSize)
 {
@@ -54,12 +50,6 @@ void Button::setFontSize(int size)
 	text.setCharacterSize(size);
 }
 
-void Button::setPosition(float x, float y)
-{
-	rect.setPosition(sf::Vector2f(x, y));
-	text.setPosition(x + (rect.getGlobalBounds().width / 2.f) - (text.getGlobalBounds().width / 2.f),
-		y + (rect.getGlobalBounds().height / 2.f) - (text.getGlobalBounds().height / 2.f));
-}
 
 void Button::setPosition(sf::Vector2f newPos)
 {
@@ -86,10 +76,6 @@ bool Button::isMouseOver(sf::Vector2f mousePos)
 	else return false;
 }
 
-void Button::clicked()
-{
-	setColor(sf::Color(64, 64, 64));
-}
 
 
 void Button::renderButton(sf::RenderWindow* window)

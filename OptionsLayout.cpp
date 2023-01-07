@@ -102,19 +102,19 @@ void OptionsLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWin
 	// obsluga przyciskow do zmiany czasu
 
 	if (btnDeltaTimeMore->isMouseOver(gameParameters->mousePos))
-		gameParameters->deltaTime += 0.01;
+		gameParameters->deltaTime += 0.01f;
 
 	if (btnDeltaTimeMore2->isMouseOver(gameParameters->mousePos))
-		gameParameters->deltaTime += 0.1;
+		gameParameters->deltaTime += 0.1f;
 
 	if (btnDeltaTimeLess->isMouseOver(gameParameters->mousePos)) {
-		gameParameters->deltaTime -= 0.01;
-		if (gameParameters->deltaTime < 0.01) gameParameters->deltaTime = 0.01;
+		gameParameters->deltaTime -= 0.01f;
+		if (gameParameters->deltaTime < 0.01) gameParameters->deltaTime = 0.01f;
 	}
 
 	if (btnDeltaTimeLess2->isMouseOver(gameParameters->mousePos)) {
-		gameParameters->deltaTime -= 0.1;
-		if (gameParameters->deltaTime < 0.01) gameParameters->deltaTime = 0.01;
+		gameParameters->deltaTime -= 0.1f;
+		if (gameParameters->deltaTime < 0.01) gameParameters->deltaTime = 0.01f;
 	}
 
 
