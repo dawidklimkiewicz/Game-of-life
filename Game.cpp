@@ -253,7 +253,10 @@ void Game::render()
 
 
 	// podglad wybranego ksztaltu
-	if (shapeSelected != -1) {
+	if (shapeSelected != -1 && gameParameters->mousePos.x <= gameParameters->videoMode.width
+		&& gameParameters->mousePos.y < gameParameters->videoMode.height
+		&& gameParameters->mousePos.x > 0 && gameParameters->mousePos.y > 0
+		) {
 
 		for (int k = 0; k < shapeSize; k++) {
 			for (int l = 0; l < shapeSize; l++) {

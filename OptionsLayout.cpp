@@ -11,29 +11,29 @@ void OptionsLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindo
 {
 	//ustawienie tekstu na ekranie
 
-	std::stringstream ss;
-	ss << "Size of the simulatinon (N x N): " << gameParameters->gameSize;
+	std::wstringstream ss;
+	ss << "Rozmiar symulacji (N x N): " << gameParameters->gameSize;
 	gameParameters->initFont(txtGameSize);
 	txtGameSize.setString(ss.str());
 	txtGameSize.setPosition((window->getSize().x / 2) - txtGameSize.getGlobalBounds().width / 2, 50);
 	window->draw(txtGameSize);
 
-	ss.str("");
-	ss << "Time between iterations in seconds: " << gameParameters->deltaTime;
+	ss.str(L"");
+	ss << L"Czas pomiêdzy iteracjami: " << gameParameters->deltaTime << L"s";
 	gameParameters->initFont(txtDeltaTime);
 	txtDeltaTime.setString(ss.str());
 	txtDeltaTime.setPosition((window->getSize().x / 2) - txtDeltaTime.getGlobalBounds().width / 2, 200);
 	window->draw(txtDeltaTime);
 
-	ss.str("");
-	ss << "Chance of random cell placement: " << gameParameters->randomSpawnChance << "%";
+	ss.str(L"");
+	ss << L"Pocz¹tkowa szansa na o¿ywienie komórki: " << gameParameters->randomSpawnChance << L"%";
 	gameParameters->initFont(txtRandomSpawnChance);
 	txtRandomSpawnChance.setString(ss.str());
 	txtRandomSpawnChance.setPosition((window->getSize().x / 2) - txtRandomSpawnChance.getGlobalBounds().width / 2, 350);
 	window->draw(txtRandomSpawnChance);
 
-	ss.str("");
-	ss << "Chance to place another cell nearby: " << gameParameters->chanceSpawnAround << "%";
+	ss.str(L"");
+	ss << L"Pocz¹tkowa szansa na o¿ywienie kolejnej komórki: " << gameParameters->chanceSpawnAround << L"%";
 	gameParameters->initFont(txtChanceSpawnAround);
 	txtChanceSpawnAround.setString(ss.str());
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);
@@ -42,25 +42,25 @@ void OptionsLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindo
 
 	//ustawienie przyciskow na ekranie
 
-	btnSizeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 100));
-	btnSizeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120 , 100));
-	btnSizeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 100));
-	btnSizeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 100));
+	btnSizeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2.f, 100));
+	btnSizeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 120 , 100));
+	btnSizeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 290, 100));
+	btnSizeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 410, 100));
 
-	btnDeltaTimeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 250));
-	btnDeltaTimeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 250));
-	btnDeltaTimeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 250));
-	btnDeltaTimeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 250));
+	btnDeltaTimeLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2.f, 250));
+	btnDeltaTimeLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 120, 250));
+	btnDeltaTimeMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 290, 250));
+	btnDeltaTimeMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 410, 250));
 
-	btnChanceLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 400));
-	btnChanceLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 400));
-	btnChanceMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 400));
-	btnChanceMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 400));
+	btnChanceLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2.f, 400));
+	btnChanceLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 120, 400));
+	btnChanceMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 290, 400));
+	btnChanceMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 410, 400));
 
-	btnChanceAroundLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2, 550));
-	btnChanceAroundLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 120, 550));
-	btnChanceAroundMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 290, 550));
-	btnChanceAroundMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2) + 410, 550));
+	btnChanceAroundLess2->setPosition(sf::Vector2f((window->getSize().x - 485) / 2.f, 550));
+	btnChanceAroundLess->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 120, 550));
+	btnChanceAroundMore->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 290, 550));
+	btnChanceAroundMore2->setPosition(sf::Vector2f(((window->getSize().x - 485) / 2.f) + 410, 550));
 
 	btnBack->setPosition(sf::Vector2f((window->getSize().x / 2) - btnBack->getButton().getGlobalBounds().width / 2, 725));
 
@@ -76,12 +76,16 @@ void OptionsLayout::buttonsClicked(GameParameters* gameParameters, sf::RenderWin
 	if (btnSizeMore->isMouseOver(gameParameters->mousePos)) {
 		gameParameters->optionsChanged = true;
 		gameParameters->gameSize += 1;
+		if (gameParameters->gameSize > 750)
+			gameParameters->gameSize = 750;
 	}
 
 
 	if (btnSizeMore2->isMouseOver(gameParameters->mousePos)) {
 		gameParameters->optionsChanged = true;
 		gameParameters->gameSize += 10;
+		if (gameParameters->gameSize > 750)
+			gameParameters->gameSize = 750;
 	}
 
 	if (btnSizeLess->isMouseOver(gameParameters->mousePos)) {

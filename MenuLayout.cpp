@@ -10,8 +10,9 @@ MenuLayout::~MenuLayout()
 void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* window)
 {
 
-	std::stringstream ss;
-	ss << "GAME OF LIFE";
+	std::wstringstream ss;
+	std::wstring test = L"Gra w ¯ycie";
+	ss << test;
 	gameParameters->initFont(txtTitle);
 	txtTitle.setString(ss.str());
 	txtTitle.setCharacterSize(50);

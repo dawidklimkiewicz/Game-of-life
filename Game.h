@@ -3,7 +3,6 @@
 #include <sstream>
 #include <vector>
 #include <time.h>
-#include <map>
 
 #include <SFML/Graphics.hpp>
 #include "Entity.h"

@@ -24,7 +24,7 @@ void GameParameters::initFont(sf::Text& txt)
 	if (font.loadFromMemory(&Roboto_Regular_ttf, Roboto_Regular_ttf_len)) {
 		txt.setString("NULL");
 		txt.setFont(font);
-		txt.setCharacterSize(32);
+		txt.setCharacterSize(30);
 		txt.setFillColor(sf::Color::Black);
 	}
 	else std::cout << "ERROR: Game::initText() - font not loaded\n";
