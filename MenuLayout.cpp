@@ -11,7 +11,7 @@ void MenuLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindow* 
 {
 
 	std::wstringstream ss;
-	std::wstring test = L"Gra w ¯ycie";
+	std::wstring test = L"Game of Life";
 	ss << test;
 	gameParameters->initFont(txtTitle);
 	txtTitle.setString(ss.str());

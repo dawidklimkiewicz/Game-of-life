@@ -12,28 +12,28 @@ void OptionsLayout::renderLayout(GameParameters* gameParameters, sf::RenderWindo
 	//ustawienie tekstu na ekranie
 
 	std::wstringstream ss;
-	ss << "Rozmiar symulacji (N x N): " << gameParameters->gameSize;
+	ss << "Size: " << gameParameters->gameSize;
 	gameParameters->initFont(txtGameSize);
 	txtGameSize.setString(ss.str());
 	txtGameSize.setPosition((window->getSize().x / 2) - txtGameSize.getGlobalBounds().width / 2, 50);
 	window->draw(txtGameSize);
 
 	ss.str(L"");
-	ss << L"Czas pomiêdzy iteracjami: " << gameParameters->deltaTime << L"s";
+	ss << L"Interval: " << gameParameters->deltaTime << L"s";
 	gameParameters->initFont(txtDeltaTime);
 	txtDeltaTime.setString(ss.str());
 	txtDeltaTime.setPosition((window->getSize().x / 2) - txtDeltaTime.getGlobalBounds().width / 2, 200);
 	window->draw(txtDeltaTime);
 
 	ss.str(L"");
-	ss << L"Pocz¹tkowa szansa na o¿ywienie komórki: " << gameParameters->randomSpawnChance << L"%";
+	ss << L"Initial chance to set a cell: " << gameParameters->randomSpawnChance << L"%";
 	gameParameters->initFont(txtRandomSpawnChance);
 	txtRandomSpawnChance.setString(ss.str());
 	txtRandomSpawnChance.setPosition((window->getSize().x / 2) - txtRandomSpawnChance.getGlobalBounds().width / 2, 350);
 	window->draw(txtRandomSpawnChance);
 
 	ss.str(L"");
-	ss << L"Pocz¹tkowa szansa na o¿ywienie kolejnej komórki: " << gameParameters->chanceSpawnAround << L"%";
+	ss << L"Initial chance to set a nearby cell: " << gameParameters->chanceSpawnAround << L"%";
 	gameParameters->initFont(txtChanceSpawnAround);
 	txtChanceSpawnAround.setString(ss.str());
 	txtChanceSpawnAround.setPosition((window->getSize().x / 2) - txtChanceSpawnAround.getGlobalBounds().width / 2, 500);
